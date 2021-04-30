@@ -8,108 +8,135 @@
  * @format
  */
 
- import React from 'react';
- import {
-   SafeAreaView,
-   ScrollView,
-   StatusBar,
-   StyleSheet,
-   Text,
-   useColorScheme,
-   View,
- } from 'react-native';
+import React from 'react';
+import {
+    FlatList,
+    SafeAreaView,
+    StatusBar,
+    Text,
+    useColorScheme,
+    View,
+} from 'react-native';
 
- import {
-   Colors,
-   DebugInstructions,
-   Header,
-   LearnMoreLinks,
-   ReloadInstructions,
- } from 'react-native/Libraries/NewAppScreen';
+import {NavigationContainer} from "@react-navigation/native";
 
- const Section: React.FC<{
-   title: string;
- }> = ({children, title}) => {
-   const isDarkMode = useColorScheme() === 'dark';
-   return (
-     <View style={styles.sectionContainer}>
-       <Text
-         style={[
-           styles.sectionTitle,
-           {
-             color: isDarkMode ? Colors.white : Colors.black,
-           },
-         ]}>
-         {title}
-       </Text>
-       <Text
-         style={[
-           styles.sectionDescription,
-           {
-             color: isDarkMode ? Colors.light : Colors.dark,
-           },
-         ]}>
-         {children}
-       </Text>
-     </View>
-   );
- };
+const mersulTrenurilor = require('./mersul-trenurilor.json');
 
- const App = () => {
-   const isDarkMode = useColorScheme() === 'dark';
+enum TrainClass {
+    Second = '2'
+}
 
-   const backgroundStyle = {
-     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-   };
+enum RouteType {
+    Implicit = 'Implicita'
+}
 
-   return (
-     <SafeAreaView style={backgroundStyle}>
-       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-       <ScrollView
-         contentInsetAdjustmentBehavior="automatic"
-         style={backgroundStyle}>
-         <Header />
-         <View
-           style={{
-             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-           }}>
-           <Section title="Step One">
-             Edit <Text style={styles.highlight}>App.js</Text> to change this
-             screen and then come back to see your edits.
-           </Section>
-           <Section title="See Your Changes">
-             <ReloadInstructions />
-           </Section>
-           <Section title="Debug">
-             <DebugInstructions />
-           </Section>
-           <Section title="Learn More">
-             Read the docs to discover what to do next:
-           </Section>
-           <LearnMoreLinks />
-         </View>
-       </ScrollView>
-     </SafeAreaView>
-   );
- };
+enum TrainType {
+    Regio = 'R'
+}
 
- const styles = StyleSheet.create({
-   sectionContainer: {
-     marginTop: 32,
-     paddingHorizontal: 24,
-   },
-   sectionTitle: {
-     fontSize: 24,
-     fontWeight: '600',
-   },
-   sectionDescription: {
-     marginTop: 8,
-     fontSize: 18,
-     fontWeight: '400',
-   },
-   highlight: {
-     fontWeight: '700',
-   },
- });
+interface TrainInfo {
+    categorieTren: string,
+    kmCum: string,
+    lungime: string,
+    numar: string,
+    operator: string,
+    proprietar: string,
+    putere: string,
+    rang: string,
+    servicii: TrainClass,
+    tonaj: string
+}
 
- export default App;
+interface RouteInfo {
+    codStatieFinala: string,
+    codStatieInitiala: string,
+    id: string,
+    tip: RouteType
+}
+
+interface Station {
+    ajustari: string,
+    codStaDest: string,
+    codStaOrigine: string,
+    denStaDestinatie: string,
+    denStaOrigine: string,
+    km: string,
+    lungime: string,
+    oraP: string,
+    oraS: string,
+    rci: TrainType,
+    rco: TrainType,
+    restrictie: string,
+    secventa: string,
+    stationareSecunde: string,
+    tipOprire: string,
+    tonaj: string,
+    vitezaLivret: string
+}
+
+interface Train {
+    info: TrainInfo,
+    route: {
+        info: RouteInfo,
+        stations: Station[]
+    }
+}
+
+function convertNumberToTimeFormat(value: number) {
+    return value < 10 ? "0" + value : value
+}
+
+function convertToHoursAndMinutes(value: string) {
+    const sec = parseInt(value, 10);
+    let hours = Math.floor(sec / 3600);
+    let minutes = Math.floor((sec - (hours * 3600)) / 60);
+
+    return convertNumberToTimeFormat(hours) + ':' + convertNumberToTimeFormat(minutes)
+}
+
+const App = () => {
+    const isDarkMode = useColorScheme() === 'dark';
+
+    const renderItem = ({item}: { item: Train }) => {
+        const statieOrigine = item.route.stations[0]
+        const statieDestinatie = item.route.stations[item.route.stations.length - 1]
+        return (
+            <View style={{
+                padding: 16, flexDirection: 'row', margin: 8, borderRadius: 8, shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 4,
+                },
+                backgroundColor: 'white',
+                shadowOpacity: 0.30,
+                shadowRadius: 4.65,
+
+                elevation: 8,
+            }} key={item.info.numar}>
+                <View style={{flex: 0.2, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{color: 'black'}}>{item.info.categorieTren}</Text>
+                    <Text style={{color: 'black'}}>{item.info.numar}</Text>
+                </View>
+                <View style={{flex: 0.6, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{color: 'black'}}>{statieOrigine.denStaOrigine}</Text>
+                    <Text style={{color: 'black'}}>{statieDestinatie.denStaDestinatie}</Text>
+                </View>
+                <View style={{flex: 0.2, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{color: 'black'}}>{convertToHoursAndMinutes(statieOrigine.oraP)}</Text>
+                    <Text style={{color: 'black'}}>{convertToHoursAndMinutes(statieDestinatie.oraS)}</Text>
+                </View>
+            </View>
+        )
+    }
+
+    return (
+        <NavigationContainer>
+            <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}/>
+            <SafeAreaView style={{flex: 1}}>
+                <FlatList data={mersulTrenurilor.cfr.trains} renderItem={renderItem}/>
+            </SafeAreaView>
+        </NavigationContainer>
+    );
+};
+
+export default App;
