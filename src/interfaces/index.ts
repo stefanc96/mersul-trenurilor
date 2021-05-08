@@ -30,7 +30,7 @@ export interface RouteInfo {
     tip: RouteType
 }
 
-export interface Station {
+export interface Stop {
     ajustari: string,
     codStaDest: string,
     codStaOrigine: string,
@@ -50,10 +50,22 @@ export interface Station {
     vitezaLivret: string
 }
 
+export interface Station {
+    cod: string,
+    denumire: string
+}
+
 export interface Train {
     info: TrainInfo,
     route: {
         info: RouteInfo,
-        stations: Station[]
-    }
+        stops: Stop[]
+    },
+    stations: Station[]
+}
+
+
+export interface TrainTime {
+    hours: number,
+    minutes: number
 }
