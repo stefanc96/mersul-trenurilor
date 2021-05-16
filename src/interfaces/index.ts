@@ -52,7 +52,11 @@ export interface Stop {
 
 export interface Station {
     cod: string,
-    denumire: string
+    name: string,
+    coordinates: {
+        lat: string,
+        lon: string
+    }
 }
 
 export interface Train {
@@ -68,4 +72,11 @@ export interface Train {
 export interface TrainTime {
     hours: number,
     minutes: number
+}
+
+export enum ScreenEnum {
+    TrainsTab = 'TrainsTab',
+    StationsTab = 'StationsTab',
+    ProfileTab = 'ProfileTab',
+    TrainInfo = 'TrainInfo'
 }

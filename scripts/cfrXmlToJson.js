@@ -1,12 +1,14 @@
 const fs = require('fs')
 const path = require('path')
+const lineReader = require('line-reader');
+
 
 const convert = require('xml-js');
 
 function toCamel(o) {
     let newO, origKey, newKey, value
     if (o instanceof Array) {
-        return o.map(function(value) {
+        return o.map(function (value) {
             if (typeof value === "object") {
                 value = toCamel(value)
             }
@@ -27,11 +29,8 @@ function toCamel(o) {
     }
     return newO
 }
-const stations = []
 
-const hasStationAlready = (cod) => stations.findIndex(station => station.cod === cod) !== -1
-
-const  xml = fs.readFileSync(path.resolve('./date.xml'), 'utf8');
+const xml = fs.readFileSync(path.resolve('./date.xml'), 'utf8');
 const cfrMersulTrenurilorString = convert.xml2json(xml, {compact: true, spaces: 4});
 const cfrMersulTrenurilorObject = JSON.parse(cfrMersulTrenurilorString);
 const metadata = cfrMersulTrenurilorObject.XmlIf.XmlMts.Mt
@@ -40,38 +39,42 @@ const trains = cfrMersulTrenurilorObject.XmlIf.XmlMts.Mt.Trenuri.Tren.map(train 
     const route = {
         info: trainRouteMetadata._attributes,
         stops: trainRouteMetadata.ElementTrasa.map(({_attributes: stop}) => {
-            if(!hasStationAlready(stop.CodStaDest)){
-                stations.push({
-                    cod: stop.CodStaDest,
-                    denumire: stop.DenStaDestinatie
-                })
-            }
-            if(!hasStationAlready(stop.CodStaOrigine)){
-                stations.push({
-                    cod: stop.CodStaOrigine,
-                    denumire: stop.DenStaOrigine
-                })
-            }
             return {
                 ...stop
             }
         }),
     }
-    return  {
+    return {
         info: train._attributes,
         route
     }
 })
 
-console.log(stations)
-const mappedData = toCamel({
-    cfr: {
-        metadata: {
-            ...metadata._attributes
-        },
-        trains,
-        stations
-    }
-})
+let stations = []
+lineReader.eachLine('./stations.txt', null, function (line) {
+    const [cod, name, lat, lon] = line.split(",")
 
-fs.writeFileSync('mersul-trenurilor.json', JSON.stringify(mappedData));
+    stations.push({
+        name,
+        cod,
+        coordinates: {
+            lat,
+            lon
+        }
+    })
+}, () => {
+    console.log(stations)
+    const mappedData = toCamel({
+        cfr: {
+            metadata: {
+                ...metadata._attributes
+            },
+            trains,
+            stations
+        }
+    })
+
+    fs.writeFileSync('mersul-trenurilor.json', JSON.stringify(mappedData));
+
+});
+
