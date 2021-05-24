@@ -1,9 +1,11 @@
 import React from 'react'
-import {Text, View} from "react-native";
-import {TrainTime} from "../../../../interfaces";
+import {View} from "react-native";
+import {TrainTime, TrainType} from "../../../../interfaces";
 import {convertToHoursAndMinutes, getHoursAndMinutes} from "../../../../utils";
 import {TouchableWithoutFeedback} from "react-native-gesture-handler";
 import {PropsTrainListItem} from "./TrainListItem.interface";
+import {ListItem, Text, useTheme} from "@ui-kitten/components";
+import {getTrainColorByType} from "./TrainListItem.utils";
 
 enum TrainRideStatus {
     ReadyToStart,
@@ -68,38 +70,26 @@ export const TrainListItem: React.FC<PropsTrainListItem> = (props) => {
     const leavingTime: TrainTime = getHoursAndMinutes(statieOrigine.oraP)
     const arrivingTime: TrainTime = getHoursAndMinutes(statieDestinatie.oraS)
     const trainRideStatus = getTrainRideStatus(leavingTime, arrivingTime)
+    const theme = useTheme()
+
+    const oraP = convertToHoursAndMinutes(statieOrigine.oraP)
+    const oraS = convertToHoursAndMinutes(statieDestinatie.oraS)
 
     const onPressTrain = () => {
         onPress({train, statieOrigine, statieDestinatie})
     }
 
+    const trainColor = getTrainColorByType(train.info.categorieTren as TrainType)
+
     return (
         <TouchableWithoutFeedback onPress={onPressTrain}>
-            <View style={{
-                padding: 16, flexDirection: 'row', margin: 8, borderRadius: 8, shadowColor: "#000",
-                shadowOffset: {
-                    width: 0,
-                    height: 4,
-                },
-                backgroundColor: getTrainRideColor(trainRideStatus),
-                shadowOpacity: 0.30,
-                shadowRadius: 4.65,
-
-                elevation: 8,
-            }}>
-                <View style={{flex: 0.2, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{color: 'black'}}>{train.info.categorieTren}</Text>
-                    <Text style={{color: 'black'}}>{train.info.numar}</Text>
-                </View>
-                <View style={{flex: 0.6, justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{color: 'black'}}>{statieOrigine.denStaOrigine}</Text>
-                    <Text style={{color: 'black'}}>{statieDestinatie.denStaDestinatie}</Text>
-                </View>
-                <View style={{flex: 0.2, justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{color: 'black'}}>{convertToHoursAndMinutes(statieOrigine.oraP)}</Text>
-                    <Text style={{color: 'black'}}>{convertToHoursAndMinutes(statieDestinatie.oraS)}</Text>
-                </View>
-            </View>
+            <ListItem
+                title={`${statieOrigine.denStaOrigine} - ${statieDestinatie.denStaDestinatie}`}
+                description={`${oraP} - ${oraS}`}
+                accessoryLeft={() => (<View style={{backgroundColor: theme['background-basic-color-2'], justifyContent: 'center', alignItems: 'center', width: 50, height: 50, borderRadius: 25}}>
+                    <Text style={{fontSize: 20, fontStyle: 'italic', fontWeight: 'bold', color: trainColor}}>{train.info.categorieTren}</Text>
+                </View>)}
+            />
         </TouchableWithoutFeedback>
     )
 }

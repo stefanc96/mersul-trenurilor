@@ -7,7 +7,13 @@ export enum RouteType {
 }
 
 export enum TrainType {
-    Regio = 'R'
+    Regio = 'R',
+    InterRegio = 'IR',
+    InterCity = 'IC',
+    InterRegioNight = 'IR-N',
+    RegioExpress = 'RE',
+    EuroNight = 'EN',
+    International = 'INT'
 }
 
 export interface TrainInfo {
@@ -75,6 +81,7 @@ export interface TrainTime {
 }
 
 export enum ScreenEnum {
+    Dashboard= 'Dashboard',
     TrainsTab = 'TrainsTab',
     StationsTab = 'StationsTab',
     ProfileTab = 'ProfileTab',

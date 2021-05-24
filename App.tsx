@@ -1,42 +1,52 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
+    Appearance,
     SafeAreaView,
     StatusBar,
-    useColorScheme,
+    useColorScheme, View,
 } from 'react-native';
-
-import {NavigationContainer} from "@react-navigation/native";
-import {Profile, Stations, TrainInfo, Trains} from "./src/screens";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {ScreenEnum} from "./src/interfaces";
-import { createStackNavigator } from '@react-navigation/stack';
-
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
-
-const TrainStack = () => {
-    return (
-        <Stack.Navigator>
-            <Stack.Screen name={ScreenEnum.TrainsTab} component={Trains} />
-            <Stack.Screen name={ScreenEnum.TrainInfo} component={TrainInfo} />
-        </Stack.Navigator>
-    )
-}
+import {ApplicationProvider, IconRegistry, Layout} from "@ui-kitten/components";
+import {EvaIconsPack} from "@ui-kitten/eva-icons";
+import * as eva from '@eva-design/eva';
+import {ThemeContext} from "./src/theme";
+import {AppNavigator} from "./src/navigation/AppNavigator";
 
 const App = () => {
     const isDarkMode = useColorScheme() === 'dark';
 
+    const [theme, setTheme] = React.useState(useColorScheme() as string);
+
+    const toggleTheme = () => {
+        const nextTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(nextTheme);
+    };
+
+    const onChangeTheme = (themeId: Appearance.AppearancePreferences) => {
+        setTheme(themeId.colorScheme as string)
+    }
+
+    useEffect(() => {
+        Appearance.addChangeListener(onChangeTheme)
+        return () => {
+            Appearance.removeChangeListener(onChangeTheme)
+        };
+    }, []);
+
+
     return (
-        <NavigationContainer>
+        <View style={{flex: 1}}>
             <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}/>
-            <SafeAreaView style={{flex: 1}}>
-                <Tab.Navigator>
-                    <Tab.Screen name={ScreenEnum.TrainsTab} component={TrainStack} />
-                    <Tab.Screen name={ScreenEnum.StationsTab} component={Stations} />
-                    <Tab.Screen name={ScreenEnum.ProfileTab} component={Profile} />
-                </Tab.Navigator>
-            </SafeAreaView>
-        </NavigationContainer>
+            <IconRegistry icons={EvaIconsPack}/>
+            <ThemeContext.Provider value={{theme, toggleTheme}}>
+                <ApplicationProvider {...eva} theme={eva[theme]}>
+                    <Layout style={{flex: 1}}>
+                        <SafeAreaView style={{flex: 1}}>
+                            <AppNavigator/>
+                        </SafeAreaView>
+                    </Layout>
+                </ApplicationProvider>
+            </ThemeContext.Provider>
+        </View>
     );
 };
 
