@@ -78,6 +78,12 @@ export interface TrainTime {
   hours: number;
   minutes: number;
 }
+export type TrainTimetableMetadata = {
+  dataExport: string;
+  mtValabilDeLa: string;
+  mtValabilPinaLa: string;
+  versiune: string;
+};
 
 export enum ScreenEnum {
   Dashboard = 'Dashboard',
@@ -86,3 +92,9 @@ export enum ScreenEnum {
   ProfileTab = 'ProfileTab',
   TrainInfo = 'TrainInfo',
 }
+
+export type TimetableInfo = {
+  metadata?: TrainTimetableMetadata;
+  trains: Array<Train>;
+  stations: Array<Station>;
+};

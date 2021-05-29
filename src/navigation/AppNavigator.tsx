@@ -1,5 +1,5 @@
 import {NavigationContainer} from '@react-navigation/native';
-import {ScreenEnum} from '../interfaces';
+import {ScreenEnum} from '../types';
 import {Profile, StationTab, TrainInfo, TrainsTab} from '../screens';
 import React from 'react';
 import {

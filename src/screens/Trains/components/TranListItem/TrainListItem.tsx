@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {TrainType} from '../../../../interfaces';
+import {TrainType} from '../../../../types';
 import {convertToHoursAndMinutes} from '../../../../utils';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {PropsTrainListItem} from './TrainListItem.interface';

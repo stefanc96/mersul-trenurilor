@@ -11,6 +11,10 @@ import * as eva from '@eva-design/eva';
 import {appStyles, ThemeContext} from './src/theme';
 import {AppNavigator} from './src/navigation';
 import {IonIconsPack} from './src/theme/icons';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {persistor, store} from './src/store';
+
 const evaTheme: Record<string, Record<string, string>> = eva;
 
 const App = () => {
@@ -35,19 +39,21 @@ const App = () => {
   }, []);
 
   return (
-    <>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <IconRegistry icons={[EvaIconsPack, IonIconsPack]} />
-      <ThemeContext.Provider value={{theme: themeId, toggleTheme}}>
-        <ApplicationProvider {...eva} theme={evaTheme[themeId]}>
-          <Layout style={appStyles.container}>
-            <SafeAreaView style={appStyles.container}>
-              <AppNavigator />
-            </SafeAreaView>
-          </Layout>
-        </ApplicationProvider>
-      </ThemeContext.Provider>
-    </>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <IconRegistry icons={[EvaIconsPack, IonIconsPack]} />
+        <ThemeContext.Provider value={{theme: themeId, toggleTheme}}>
+          <ApplicationProvider {...eva} theme={evaTheme[themeId]}>
+            <Layout style={appStyles.container}>
+              <SafeAreaView style={appStyles.container}>
+                <AppNavigator />
+              </SafeAreaView>
+            </Layout>
+          </ApplicationProvider>
+        </ThemeContext.Provider>
+      </PersistGate>
+    </Provider>
   );
 };
 

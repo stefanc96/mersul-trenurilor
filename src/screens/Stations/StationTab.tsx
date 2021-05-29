@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StationListItem} from './components';
-import {Station} from '../../interfaces';
+import {Station} from '../../types';
 import {deburr} from 'lodash';
 import {
   Divider,

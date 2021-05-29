@@ -1,4 +1,4 @@
-import {TrainTime, TrainType} from '../../../../interfaces';
+import {TrainTime, TrainType} from '../../../../types';
 import {ColorValue} from 'react-native';
 import {TrainRideStatus} from './TrainListItem.interface';
 

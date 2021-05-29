@@ -1,4 +1,4 @@
-import {Stop, Train} from '../../../../interfaces';
+import {Stop, Train} from '../../../../types';
 
 export interface PropsTrainListItem {
   train: Train;

@@ -1,4 +1,4 @@
-import {TrainTime} from '../interfaces';
+import {TrainTime} from '../types';
 
 export function convertToHoursAndMinutes(value: string) {
   const {hours, minutes} = getHoursAndMinutes(value);

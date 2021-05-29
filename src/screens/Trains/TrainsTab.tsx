@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TrainListItem} from './components';
-import {ScreenEnum, Station, Stop, Train} from '../../interfaces';
+import {ScreenEnum, Station, Stop, Train} from '../../types';
 import {deburr} from 'lodash';
 import {StackActions} from '@react-navigation/native';
 import {
