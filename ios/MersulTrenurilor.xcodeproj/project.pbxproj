@@ -122,6 +122,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				8B224708A388D9806D378526 /* Pods */,
+				C36B159CBC154D2681A6A457 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -145,8 +146,14 @@
 				E760116E2AA918CCF5A71802 /* Pods-MersulTrenurilor-MersulTrenurilorTests.debug.xcconfig */,
 				3044CC59AB779E4527BE8543 /* Pods-MersulTrenurilor-MersulTrenurilorTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		C36B159CBC154D2681A6A457 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

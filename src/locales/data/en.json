@@ -1,0 +1,8 @@
+{
+  "leavingStation": "Departure station ...",
+  "arrivingStation": "Arrival station ...",
+  "from": "from:",
+  "to": "to:",
+  "noTrain": "No train to display",
+  "noStation": "No station to display"
+}

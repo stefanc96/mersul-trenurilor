@@ -1,1 +1,1 @@
-export * from './timeUtils'
+export * from './timeUtils';
