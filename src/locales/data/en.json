@@ -4,5 +4,6 @@
   "from": "from:",
   "to": "to:",
   "noTrain": "No train to display",
-  "noStation": "No station to display"
+  "noStation": "No station to display",
+  "loadingApp": "Loading the app ..."
 }

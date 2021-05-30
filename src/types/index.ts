@@ -86,6 +86,7 @@ export type TrainTimetableMetadata = {
 };
 
 export enum ScreenEnum {
+  SplashScreen = 'SplashScreen',
   Dashboard = 'Dashboard',
   TrainsTab = 'TrainsTab',
   StationsTab = 'StationsTab',

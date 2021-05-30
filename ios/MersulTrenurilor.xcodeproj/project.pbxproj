@@ -11,6 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1800415326638B7F00476C8F /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1800415226638B7F00476C8F /* File.swift */; };
 		2540620AA3A5E29B9500FA5D /* libPods-MersulTrenurilor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9C7B0A975E4E6E8A5AEBFEE /* libPods-MersulTrenurilor.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		938F9F94363D86610B769389 /* libPods-MersulTrenurilor-MersulTrenurilorTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7C6BA622B925D3F5B396DB8 /* libPods-MersulTrenurilor-MersulTrenurilorTests.a */; };
@@ -36,6 +37,8 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = MersulTrenurilor/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MersulTrenurilor/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MersulTrenurilor/main.m; sourceTree = "<group>"; };
+		1800415126638B7E00476C8F /* MersulTrenurilor-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MersulTrenurilor-Bridging-Header.h"; sourceTree = "<group>"; };
+		1800415226638B7F00476C8F /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		1D74A0BDDB60979CA4637980 /* Pods-MersulTrenurilor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MersulTrenurilor.debug.xcconfig"; path = "Target Support Files/Pods-MersulTrenurilor/Pods-MersulTrenurilor.debug.xcconfig"; sourceTree = "<group>"; };
 		3044CC59AB779E4527BE8543 /* Pods-MersulTrenurilor-MersulTrenurilorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MersulTrenurilor-MersulTrenurilorTests.release.xcconfig"; path = "Target Support Files/Pods-MersulTrenurilor-MersulTrenurilorTests/Pods-MersulTrenurilor-MersulTrenurilorTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MersulTrenurilor/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -92,6 +95,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				1800415226638B7F00476C8F /* File.swift */,
+				1800415126638B7E00476C8F /* MersulTrenurilor-Bridging-Header.h */,
 			);
 			name = MersulTrenurilor;
 			sourceTree = "<group>";
@@ -215,7 +220,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1250;
 					};
 				};
 			};
@@ -419,6 +424,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				1800415326638B7F00476C8F /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -438,6 +444,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E760116E2AA918CCF5A71802 /* Pods-MersulTrenurilor-MersulTrenurilorTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -465,6 +472,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3044CC59AB779E4527BE8543 /* Pods-MersulTrenurilor-MersulTrenurilorTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = MersulTrenurilorTests/Info.plist;
@@ -505,6 +513,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MersulTrenurilor;
+				SWIFT_OBJC_BRIDGING_HEADER = "MersulTrenurilor-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -530,6 +539,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MersulTrenurilor;
+				SWIFT_OBJC_BRIDGING_HEADER = "MersulTrenurilor-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

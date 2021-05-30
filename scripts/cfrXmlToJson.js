@@ -7,11 +7,11 @@ const convert = require('xml-js');
 function toCamel(o) {
   let newO, origKey, newKey, value;
   if (o instanceof Array) {
-    return o.map(function (mapValue) {
-      if (typeof mapValue === 'object') {
-        value = toCamel(mapValue);
+    return o.map(function (value) {
+      if (typeof value === 'object') {
+        value = toCamel(value);
       }
-      return mapValue;
+      return value;
     });
   } else {
     newO = {};

@@ -3,5 +3,7 @@ import {TimetableAction} from './timetable.const';
 
 export const setTimetableInfo = (timetableInfo: TimetableInfo) => ({
   type: TimetableAction.SetTimetableInfo,
-  timetableInfo,
+  payload: {
+    timetableInfo,
+  },
 });

@@ -18,6 +18,8 @@ import {appStyles, MEDIUM_SIZE, SMALL_SIZE} from '../../theme';
 import {IconPack} from '../../theme/icons/Icon.interface';
 import {swapButtonSize} from './TrainsTab.const';
 import {strings} from '../../locales';
+import {useSelector} from 'react-redux';
+import {AppState} from '../../store';
 
 const mersulTrenurilor = require('../../../mersul-trenurilor.json');
 const stations: Station[] = mersulTrenurilor.cfr.stations;
@@ -30,13 +32,15 @@ const compareTrain = (trainFirst: Train, trainSecond: Train) => {
   }
   return 0;
 };
-const initialTrains: Train[] = mersulTrenurilor.cfr.trains;
 
 const processStationName = (stationName: string): string => {
   return deburr(stationName).toLowerCase();
 };
 
 export const TrainsTab = ({navigation}: {navigation: any}) => {
+  const initialTrains: Array<Train> = useSelector(
+    (state: AppState) => state.timetable.trains,
+  );
   const [trains, setTrains] = useState(initialTrains.sort(compareTrain));
   const [searchFromStation, setSearchFromStation] = useState('');
   const [searchToStation, setSearchToStation] = useState('');

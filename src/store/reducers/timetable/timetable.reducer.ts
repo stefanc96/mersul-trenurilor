@@ -15,8 +15,8 @@ export const timetableReducer = (
   switch (action.type as TimetableAction) {
     case TimetableAction.SetTimetableInfo:
       return {
-        ...action.payload.timetableInfo,
         ...state,
+        ...action.payload.timetableInfo,
       };
     default:
       return state;

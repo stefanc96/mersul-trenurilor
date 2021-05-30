@@ -8,6 +8,7 @@ import {
 } from '@react-navigation/bottom-tabs';
 import {BottomNavigation, BottomNavigationTab} from '@ui-kitten/components';
 import {createStackNavigator} from '@react-navigation/stack';
+import {SplashScreen} from '../screens/Splash/SplashScreen';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -16,6 +17,7 @@ export const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode={'none'}>
+        <Stack.Screen name={ScreenEnum.SplashScreen} component={SplashScreen} />
         <Stack.Screen name={ScreenEnum.Dashboard} component={BottomNavigator} />
         <Stack.Screen name={ScreenEnum.TrainInfo} component={TrainInfo} />
       </Stack.Navigator>

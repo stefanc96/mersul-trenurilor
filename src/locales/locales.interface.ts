@@ -5,4 +5,5 @@ export interface LocalesInterface {
   to: string;
   noTrain: string;
   noStation: string;
+  loadingApp: string;
 }
