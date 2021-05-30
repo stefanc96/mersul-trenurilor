@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TrainListItem} from './components';
-import {ScreenEnum, Station, Stop, Train} from '../../types';
-import {deburr} from 'lodash';
+import {ScreenEnum, Train} from '../../types';
+import {chain, deburr} from 'lodash';
 import {StackActions} from '@react-navigation/native';
 import {
   Button,
@@ -20,103 +20,29 @@ import {swapButtonSize} from './TrainsTab.const';
 import {strings} from '../../locales';
 import {useSelector} from 'react-redux';
 import {AppState} from '../../store';
-
-const mersulTrenurilor = require('../../../mersul-trenurilor.json');
-const stations: Station[] = mersulTrenurilor.cfr.stations;
-
-const compareTrain = (trainFirst: Train, trainSecond: Train) => {
-  if (trainFirst.route.stops[0].oraP > trainSecond.route.stops[0].oraP) {
-    return 1;
-  } else if (trainFirst.route.stops[0].oraP < trainSecond.route.stops[0].oraP) {
-    return -1;
-  }
-  return 0;
-};
-
-const processStationName = (stationName: string): string => {
-  return deburr(stationName).toLowerCase();
-};
+import {filterTrains} from './TrainTab.utils';
 
 export const TrainsTab = ({navigation}: {navigation: any}) => {
-  const initialTrains: Array<Train> = useSelector(
+  const initialTrains = useSelector(
     (state: AppState) => state.timetable.trains,
   );
-  const [trains, setTrains] = useState(initialTrains.sort(compareTrain));
+  const stationWithTrains = useSelector(
+    (state: AppState) => state.timetable.stationWithTrains,
+  );
   const [searchFromStation, setSearchFromStation] = useState('');
   const [searchToStation, setSearchToStation] = useState('');
   const theme = useTheme();
 
-  useEffect(() => {
-    const fromStation = processStationName(searchFromStation);
+  const trains = filterTrains(
+    initialTrains,
+    stationWithTrains,
+    deburr(searchFromStation).toLowerCase(),
+    deburr(searchToStation).toLowerCase(),
+  );
 
-    const searchedTrains = initialTrains.filter(train => {
-      const leavingStationName = processStationName(
-        train.route.stops[0].denStaOrigine,
-      );
-
-      if (searchToStation) {
-        const destinationStationName = processStationName(
-          train.route.stops[train.route.stops.length - 1].denStaDestinatie,
-        );
-        const searchToStationProcessed = processStationName(searchToStation);
-        if (
-          leavingStationName.includes(fromStation) &&
-          destinationStationName.includes(searchToStationProcessed)
-        ) {
-          return train;
-        }
-      } else {
-        if (leavingStationName.includes(fromStation)) {
-          return train;
-        }
-      }
-    });
-    setTrains(searchedTrains.sort(compareTrain));
-  }, [searchFromStation, searchToStation]);
-
-  useEffect(() => {
-    const toStation = processStationName(searchToStation);
-    const searchedTrains = initialTrains.filter(train => {
-      const destinationStationName = processStationName(
-        train.route.stops[train.route.stops.length - 1].denStaDestinatie,
-      );
-
-      if (searchFromStation) {
-        const leavingStationName = processStationName(
-          train.route.stops[0].denStaOrigine,
-        );
-        const searchFromStationProcessed =
-          processStationName(searchFromStation);
-
-        if (
-          leavingStationName.includes(searchFromStationProcessed) &&
-          destinationStationName.includes(toStation)
-        ) {
-          return train;
-        }
-      } else {
-        if (destinationStationName.includes(toStation)) {
-          return train;
-        }
-      }
-    });
-    setTrains(searchedTrains.sort(compareTrain));
-  }, [searchToStation, searchFromStation]);
-
-  const onPressTrain = (info: any) => {
-    const {
-      statieOrigine,
-      statieDestinatie,
-    }: {statieOrigine: Stop; statieDestinatie: Stop} = info;
-    const startCoordinates = stations.find(
-      station => station.cod === statieOrigine.codStaOrigine,
-    )?.coordinates;
-    const endCoordinates = stations.find(
-      station => station.cod === statieDestinatie.codStaDest,
-    )?.coordinates;
-
+  const onPressTrain = (train: Train) => {
     const pushAction = StackActions.push(ScreenEnum.TrainInfo, {
-      coordinates: [startCoordinates, endCoordinates],
+      train,
     });
 
     navigation.dispatch(pushAction);
@@ -134,8 +60,7 @@ export const TrainsTab = ({navigation}: {navigation: any}) => {
     setSearchFromStation(newSearchFromStation);
   };
 
-  const trainKeyExtractor = (item: Train, index: number) =>
-    `${item.info.numar} - ${index}`;
+  const trainKeyExtractor = (item: Train, index: number) => `${index}`;
 
   return (
     <Layout style={styles.container}>
@@ -186,7 +111,8 @@ export const TrainsTab = ({navigation}: {navigation: any}) => {
       </View>
       <List
         bounces={false}
-        data={trains}
+        data={chain(trains).orderBy('route.stops[0].oraP').value()}
+        extraData={[searchFromStation, searchToStation]}
         ItemSeparatorComponent={Divider}
         ListEmptyComponent={() => (
           <Text style={styles.emptyLabel}>{strings.noTrain}</Text>

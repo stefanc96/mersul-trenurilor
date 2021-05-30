@@ -39,25 +39,32 @@ const cfrMersulTrenurilorString = convert.xml2json(xml, {
   compact: true,
   spaces: 4,
 });
+
+const stationWithTrains = {};
 const cfrMersulTrenurilorObject = JSON.parse(cfrMersulTrenurilorString);
 const metadata = cfrMersulTrenurilorObject.XmlIf.XmlMts.Mt;
-const trains = cfrMersulTrenurilorObject.XmlIf.XmlMts.Mt.Trenuri.Tren.map(
-  train => {
-    const trainRouteMetadata = train.Trase.Trasa;
-    const route = {
-      info: trainRouteMetadata._attributes,
-      stops: trainRouteMetadata.ElementTrasa.map(({_attributes: stop}) => {
-        return {
-          ...stop,
-        };
-      }),
-    };
-    return {
-      info: train._attributes,
-      route,
-    };
-  },
-);
+
+const trains = {};
+cfrMersulTrenurilorObject.XmlIf.XmlMts.Mt.Trenuri.Tren.forEach(train => {
+  const trainRouteMetadata = train.Trase.Trasa;
+  const route = {
+    info: trainRouteMetadata._attributes,
+    stops: trainRouteMetadata.ElementTrasa.map(({_attributes: stop}) => {
+      if (stationWithTrains[stop.DenStaOrigine]) {
+        stationWithTrains[stop.DenStaOrigine].push(train._attributes.Numar);
+      } else {
+        stationWithTrains[stop.DenStaOrigine] = [train._attributes.Numar];
+      }
+      return {
+        ...stop,
+      };
+    }),
+  };
+  trains[train._attributes.Numar] = {
+    info: train._attributes,
+    route,
+  };
+});
 
 let stations = [];
 lineReader.eachLine(
@@ -86,6 +93,14 @@ lineReader.eachLine(
       },
     });
 
-    fs.writeFileSync('mersul-trenurilor.json', JSON.stringify(mappedData));
+    fs.writeFileSync(
+      'mersul-trenurilor.json',
+      JSON.stringify({
+        cfr: {
+          ...mappedData.cfr,
+          stationWithTrains,
+        },
+      }),
+    );
   },
 );

@@ -17,7 +17,7 @@ export const TrainListItem: React.FC<PropsTrainListItem> = props => {
   const oraS = convertToHoursAndMinutes(statieDestinatie.oraS);
 
   const onPressTrain = () => {
-    onPress({train, statieOrigine, statieDestinatie});
+    onPress(train);
   };
 
   const trainColor = getTrainColorByType(train.info.categorieTren as TrainType);

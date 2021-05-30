@@ -96,6 +96,7 @@ export enum ScreenEnum {
 
 export type TimetableInfo = {
   metadata?: TrainTimetableMetadata;
-  trains: Array<Train>;
+  trains: {[key: string]: Train};
   stations: Array<Station>;
+  stationWithTrains: {[key: string]: Array<string>};
 };

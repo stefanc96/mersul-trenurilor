@@ -3,8 +3,9 @@ import {PayloadAction} from '@reduxjs/toolkit';
 import {TimetableInfo} from '../../../types';
 
 const initialState: TimetableInfo = {
+  stationWithTrains: {},
   metadata: undefined,
-  trains: [],
+  trains: {},
   stations: [],
 };
 

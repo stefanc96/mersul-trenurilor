@@ -15,14 +15,13 @@ const mersulTrenurilor = require('../../../mersul-trenurilor.json');
 export const SplashScreen: React.FC<StackScreenProps<any>> = ({navigation}) => {
   const timetable = useSelector((state: AppState) => state.timetable);
   const dispatch = useDispatch();
-
   const navigateToDashboard = () => {
     const replaceAction = StackActions.replace(ScreenEnum.Dashboard);
 
     navigation.dispatch(replaceAction);
   };
   useEffect(() => {
-    if (!timetable.metadata?.mtValabilPinaLa || !timetable.trains.length) {
+    if (!timetable.metadata?.mtValabilPinaLa) {
       dispatch(setTimetableInfo(mersulTrenurilor.cfr));
     }
   }, []);
