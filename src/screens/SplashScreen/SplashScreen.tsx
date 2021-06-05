@@ -24,7 +24,7 @@ export const SplashScreen: React.FC<StackScreenProps<any>> = ({navigation}) => {
     if (!timetable.metadata?.mtValabilPinaLa) {
       dispatch(setTimetableInfo(mersulTrenurilor.cfr));
     }
-  }, []);
+  }, [dispatch, timetable]);
 
   const onAnimationFinish = () => {
     navigateToDashboard();

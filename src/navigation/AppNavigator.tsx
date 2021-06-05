@@ -1,6 +1,12 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {ScreenEnum} from '../types';
-import {Profile, StationTab, TrainInfo, TrainsTab} from '../screens';
+import {
+  Profile,
+  StationTab,
+  TrainInfo,
+  TrainsTab,
+  SplashScreen,
+} from '../screens';
 import React from 'react';
 import {
   BottomTabBarProps,
@@ -8,7 +14,6 @@ import {
 } from '@react-navigation/bottom-tabs';
 import {BottomNavigation, BottomNavigationTab} from '@ui-kitten/components';
 import {createStackNavigator} from '@react-navigation/stack';
-import {SplashScreen} from '../screens/Splash/SplashScreen';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 const Stack = createStackNavigator();
