@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TrainListItem} from './components';
 import {ScreenEnum, Train} from '../../types';
-import {chain, deburr} from 'lodash';
+import {deburr} from 'lodash';
 import {StackActions} from '@react-navigation/native';
 import {
   Button,
@@ -111,7 +111,7 @@ export const TrainsTab = ({navigation}: {navigation: any}) => {
       </View>
       <List
         bounces={false}
-        data={chain(trains).orderBy('route.stops[0].oraP').value()}
+        data={trains}
         extraData={[searchFromStation, searchToStation]}
         ItemSeparatorComponent={Divider}
         ListEmptyComponent={() => (

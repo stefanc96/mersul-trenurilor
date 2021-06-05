@@ -1,5 +1,5 @@
 import {Train} from '../../types';
-import {chain, deburr, intersection, keys, words} from 'lodash';
+import {chain, deburr, intersection, keys, words, last, head} from 'lodash';
 
 export const compareTrain = (trainFirst: Train, trainSecond: Train) => {
   if (trainFirst.route.stops[0].oraP > trainSecond.route.stops[0].oraP) {
@@ -13,15 +13,12 @@ export const compareTrain = (trainFirst: Train, trainSecond: Train) => {
 const getTrainsByStation = (
   initialTrains: {[p: string]: Train},
   stationWithTrains: {[key: string]: Array<string>},
-  station: string,
+  searchedStation: string,
 ) => {
   return chain(stationWithTrains)
     .keys()
     .filter(stationName => {
-      const processedName = deburr(stationName.toLowerCase());
-      return (
-        words(processedName).includes(station) || processedName === station
-      );
+      return isSearchedStationInStationName(stationName, searchedStation);
     })
     .map(stationName => stationWithTrains[stationName])
     .concat()
@@ -38,30 +35,46 @@ export const filterTrains = (
   let trainIds: string[] = [];
   switch (true) {
     case !!fromStation.length && !toStation.length:
-      trainIds = getTrainsByStation(
-        initialTrains,
-        stationWithTrains,
-        fromStation,
-      );
+      trainIds = chain(
+        getTrainsByStation(initialTrains, stationWithTrains, fromStation),
+      )
+        .filter(trainId => {
+          const lastStationName =
+            last(initialTrains[trainId]?.route?.stops)?.denStaOrigine || '';
+          return !isSearchedStationInStationName(lastStationName, fromStation);
+        })
+        .value();
       break;
     case !fromStation.length && !!toStation.length:
-      trainIds = getTrainsByStation(
-        initialTrains,
-        stationWithTrains,
-        toStation,
-      );
+      trainIds = chain(
+        getTrainsByStation(initialTrains, stationWithTrains, toStation),
+      )
+        .filter(trainId => {
+          const firstStationName =
+            head(initialTrains[trainId]?.route?.stops)?.denStaOrigine || '';
+          return !isSearchedStationInStationName(firstStationName, toStation);
+        })
+        .value();
       break;
     case !!fromStation.length && !!toStation.length:
-      const departureTrainIds = getTrainsByStation(
-        initialTrains,
-        stationWithTrains,
-        fromStation,
-      );
-      const arrivalTrainIds = getTrainsByStation(
-        initialTrains,
-        stationWithTrains,
-        toStation,
-      );
+      const departureTrainIds = chain(
+        getTrainsByStation(initialTrains, stationWithTrains, fromStation),
+      )
+        .filter(trainId => {
+          const lastStationName =
+            last(initialTrains[trainId]?.route?.stops)?.denStaOrigine || '';
+          return !isSearchedStationInStationName(lastStationName, fromStation);
+        })
+        .value();
+      const arrivalTrainIds = chain(
+        getTrainsByStation(initialTrains, stationWithTrains, toStation),
+      )
+        .filter(trainId => {
+          const firstStationName =
+            head(initialTrains[trainId]?.route?.stops)?.denStaOrigine || '';
+          return !isSearchedStationInStationName(firstStationName, toStation);
+        })
+        .value();
 
       trainIds = intersection(departureTrainIds, arrivalTrainIds);
       break;
@@ -71,5 +84,17 @@ export const filterTrains = (
   }
   return chain(trainIds)
     .map(trainId => initialTrains[trainId])
+    .orderBy('route.stops[0].oraP')
     .value();
+};
+
+const isSearchedStationInStationName = (
+  stationName: string,
+  searchedStation: string,
+): boolean => {
+  const processedName = deburr(stationName.toLowerCase());
+  return (
+    words(processedName).includes(searchedStation) ||
+    processedName === searchedStation
+  );
 };
