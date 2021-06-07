@@ -15,12 +15,11 @@ export const TrainListItem: React.FC<PropsTrainListItem> = props => {
 
   const oraP = convertToHoursAndMinutes(statieOrigine.oraP);
   const oraS = convertToHoursAndMinutes(statieDestinatie.oraS);
+  const trainColor = getTrainColorByType(train.info.categorieTren as TrainType);
 
   const onPressTrain = () => {
-    onPress(train);
+    onPress(train, trainColor);
   };
-
-  const trainColor = getTrainColorByType(train.info.categorieTren as TrainType);
 
   return (
     <TouchableWithoutFeedback onPress={onPressTrain}>

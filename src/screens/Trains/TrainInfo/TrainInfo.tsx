@@ -5,11 +5,13 @@ import {appStyles} from '../../../theme';
 import {Station, Stop, Train} from '../../../types';
 import {useSelector} from 'react-redux';
 import {AppState} from '../../../store';
-import {Layout, List, ListItem} from '@ui-kitten/components';
-import {StyleSheet} from 'react-native';
+import {Layout, List} from '@ui-kitten/components';
+import {ColorValue, StyleSheet} from 'react-native';
+import {RideListItem} from '../../../components';
 
 export const TrainInfo = (props: any) => {
-  const {train}: {train: Train} = props.route.params;
+  const {train, trainColor}: {train: Train; trainColor: ColorValue} =
+    props.route.params;
   const stations: Array<Station> = useSelector(
     (state: AppState) => state.timetable.stations,
   );
@@ -23,8 +25,8 @@ export const TrainInfo = (props: any) => {
     station => station.cod === statieDestinatie.codStaDest,
   )?.coordinates;
 
-  const renderStop = ({item}: {item: Stop; index: number}) => {
-    return <ListItem title={item.denStaOrigine} />;
+  const renderStop = ({item, index}: {item: Stop; index: number}) => {
+    return <RideListItem stop={item} index={index} trainColor={trainColor} />;
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ColorValue, StyleSheet, View} from 'react-native';
 import {TrainListItem} from './components';
 import {ScreenEnum, Train} from '../../types';
 import {deburr} from 'lodash';
@@ -40,9 +40,10 @@ export const TrainsTab = ({navigation}: {navigation: any}) => {
     deburr(searchToStation).toLowerCase(),
   );
 
-  const onPressTrain = (train: Train) => {
+  const onPressTrain = (train: Train, trainColor: ColorValue) => {
     const pushAction = StackActions.push(ScreenEnum.TrainInfo, {
       train,
+      trainColor,
     });
 
     navigation.dispatch(pushAction);

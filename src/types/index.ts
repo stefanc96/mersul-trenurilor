@@ -100,3 +100,9 @@ export type TimetableInfo = {
   stations: Array<Station>;
   stationWithTrains: {[key: string]: Array<string>};
 };
+
+export enum TrainStopStatus {
+  InStation = 'InStation',
+  HasPassed = 'HasPassed',
+  NeedsToArrive = 'NeedsToArrive',
+}
