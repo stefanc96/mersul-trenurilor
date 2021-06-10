@@ -5,4 +5,6 @@ export interface RideListItemProps {
   trainColor: ColorValue;
   stop: Stop;
   index: number;
+  previousStop: Stop;
+  km: number;
 }
