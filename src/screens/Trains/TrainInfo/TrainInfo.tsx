@@ -1,7 +1,9 @@
-import React from 'react';
-import MapView from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
-import {reduce} from 'lodash';
+import React, {Ref, useRef} from 'react';
+import MapView, {Marker} from 'react-native-maps';
+import MapViewDirections, {
+  MapViewDirectionsWaypoints,
+} from 'react-native-maps-directions';
+import {chain, reduce} from 'lodash';
 import {appStyles} from '../../../theme';
 import {Station, Stop, Train} from '../../../types';
 import {useSelector} from 'react-redux';
@@ -13,13 +15,15 @@ import {
   TopNavigation,
   TopNavigationAction,
 } from '@ui-kitten/components';
-import {ColorValue, StyleSheet} from 'react-native';
+import {ColorValue, StyleSheet, useWindowDimensions} from 'react-native';
 import {RideListItem} from '../../../components';
 import {StackActions} from '@react-navigation/native';
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />;
 
 export const TrainInfo = (props: any) => {
+  const {width, height} = useWindowDimensions();
+  const mapView: Ref<MapView> = useRef(null);
   const {train, trainColor}: {train: Train; trainColor: ColorValue} =
     props.route.params;
 
@@ -73,6 +77,13 @@ export const TrainInfo = (props: any) => {
     <TopNavigationAction icon={BackIcon} onPress={onPressBack} />
   );
 
+  const stationCoordinates = chain(train.stations)
+    .map(station => ({
+      latitude: Number(station.coordinates.lat),
+      longitude: Number(station.coordinates.lon),
+    }))
+    .value();
+
   return (
     <Layout style={appStyles.container}>
       <TopNavigation
@@ -81,15 +92,31 @@ export const TrainInfo = (props: any) => {
         subtitle={`${train.info.categorieTren}${train.info.numar}`}
         accessoryLeft={renderBackAction}
       />
-      <MapView style={styles.mapView}>
+      {stationCoordinates.map((station, index) => (
+        <Marker key={index} coordinate={station} />
+      ))}
+      <MapView ref={mapView} style={styles.mapView}>
         <MapViewDirections
           origin={{
             latitude: Number(startCoordinates?.lat),
             longitude: Number(startCoordinates?.lon),
           }}
+          strokeColor={trainColor as string}
+          strokeWidth={3}
+          waypoints={stationCoordinates as MapViewDirectionsWaypoints[]}
           destination={{
             latitude: Number(endCoordinates?.lat),
             longitude: Number(endCoordinates?.lon),
+          }}
+          onReady={result => {
+            mapView?.current?.fitToCoordinates?.(result.coordinates, {
+              edgePadding: {
+                right: width / 20,
+                bottom: height / 20,
+                left: width / 20,
+                top: height / 20,
+              },
+            });
           }}
           apikey={'AIzaSyDLwnfHcDIgKJSfBIBE77KUWbWHCuWgZ0o'}
           mode={'TRANSIT'}
