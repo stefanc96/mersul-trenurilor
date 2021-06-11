@@ -24,47 +24,14 @@ export const getTrainStopStatus = (
   leavingTime: string,
 ): TrainStopStatus => {
   const now = new Date();
-  const nowTrainTime: TrainTime = {
-    minutes: now.getMinutes(),
-    hours: now.getHours(),
-  };
-  const arrivingTimeDetails = getHoursAndMinutes(arrivingTime);
-  const leavingTimeDetails = getHoursAndMinutes(leavingTime);
-  const arrivingStatusComparedWithNow = compareTrainTimes(
-    nowTrainTime,
-    arrivingTimeDetails,
-  );
-  const leavingStatusComparedWithNow = compareTrainTimes(
-    nowTrainTime,
-    leavingTimeDetails,
-  );
-
+  const nowTrainTime = `${now.getHours()}:${now.getMinutes()}`;
   switch (true) {
-    case arrivingStatusComparedWithNow === -1:
+    case nowTrainTime < arrivingTime:
       return TrainStopStatus.NeedsToArrive;
-    case arrivingStatusComparedWithNow <= 0 &&
-      leavingStatusComparedWithNow === -1:
-      return TrainStopStatus.InStation;
-    default:
+    case nowTrainTime > leavingTime:
       return TrainStopStatus.HasPassed;
-  }
-};
-
-const compareTrainTimes = (time1: TrainTime, time2: TrainTime): number => {
-  switch (true) {
-    case time1.hours > time2.hours:
-      return 1;
-    case time1.hours < time2.hours:
-      return -1;
     default:
-      switch (true) {
-        case time1.minutes > time2.minutes:
-          return 1;
-        case time1.minutes < time2.minutes:
-          return -1;
-        default:
-          return 0;
-      }
+      return TrainStopStatus.InStation;
   }
 };
 

@@ -14,9 +14,10 @@ export const RideListItem: React.FC<RideListItemProps> = ({
   km,
 }) => {
   const theme = useTheme();
-  const rideStopStatus = getTrainStopStatus(stop.oraS, stop.oraP);
-  const arrivalTime = convertToHoursAndMinutes(previousStop?.oraP || stop.oraS);
+  const arrivalTime = convertToHoursAndMinutes(previousStop?.oraS);
   const leavingTime = convertToHoursAndMinutes(stop.oraP);
+  const rideStopStatus = getTrainStopStatus(arrivalTime, leavingTime);
+
   return (
     <View>
       {index !== 0 && (
