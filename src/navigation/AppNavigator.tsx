@@ -1,7 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {ScreenEnum} from '../types';
 import {
-  Profile,
+  Settings,
   StationTab,
   TrainInfo,
   TrainsTab,
@@ -70,7 +70,7 @@ const BottomNavigator = () => {
     <Navigator tabBar={props => <BottomTabBar {...props} />}>
       <Screen name={ScreenEnum.TrainsTab} component={TrainsTab} />
       <Screen name={ScreenEnum.StationsTab} component={StationTab} />
-      <Screen name={ScreenEnum.ProfileTab} component={Profile} />
+      <Screen name={ScreenEnum.ProfileTab} component={Settings} />
     </Navigator>
   );
 };

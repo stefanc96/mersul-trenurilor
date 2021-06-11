@@ -14,13 +14,14 @@ export const RideListItem: React.FC<RideListItemProps> = ({
   km,
 }) => {
   const theme = useTheme();
-  const arrivalTime = convertToHoursAndMinutes(previousStop?.oraS);
+  const arrivalTime = convertToHoursAndMinutes(previousStop?.oraS || stop.oraS);
   const leavingTime = convertToHoursAndMinutes(stop.oraP);
   const rideStopStatus = getTrainStopStatus(arrivalTime, leavingTime);
+  const isFirst = index === 0;
 
   return (
     <View>
-      {index !== 0 && (
+      {!isFirst && (
         <View
           style={[
             {
@@ -30,7 +31,7 @@ export const RideListItem: React.FC<RideListItemProps> = ({
           ]}
         />
       )}
-      <Row>
+      <Row style={styles.row}>
         <View style={styles.kmColumn}>
           <Text style={{color: theme['text-basic-color']}}>
             {km.toFixed(1)}
@@ -40,7 +41,9 @@ export const RideListItem: React.FC<RideListItemProps> = ({
           <RideDot trainColor={trainColor} rideStopStatus={rideStopStatus} />
         </View>
         <View style={styles.arrivalTimeColumn}>
-          <Text style={{color: theme['text-basic-color']}}>{arrivalTime}</Text>
+          <Text style={{color: theme['text-basic-color']}}>
+            {!isFirst && arrivalTime}
+          </Text>
         </View>
         <View style={styles.stationNameColumn}>
           <Text
@@ -66,6 +69,9 @@ const styles = StyleSheet.create({
     marginRight: '75%',
     height: 40,
     alignSelf: 'center',
+  },
+  row: {
+    alignItems: 'center',
   },
   kmColumn: {
     width: '15%',

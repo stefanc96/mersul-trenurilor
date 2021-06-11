@@ -132,7 +132,11 @@ export const TrainInfo = (props: any) => {
           mode={'TRANSIT'}
         />
       </MapView>
-      <List data={train.route.stops} renderItem={renderStop} />
+      <List
+        contentContainerStyle={styles.list}
+        data={train.route.stops}
+        renderItem={renderStop}
+      />
     </Layout>
   );
 };
@@ -141,5 +145,8 @@ const styles = StyleSheet.create({
   mapView: {
     height: '30%',
     width: '100%',
+  },
+  list: {
+    paddingVertical: 20,
   },
 });
