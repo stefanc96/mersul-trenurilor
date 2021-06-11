@@ -7,17 +7,14 @@ import {Station, Stop, Train} from '../../../types';
 import {useSelector} from 'react-redux';
 import {AppState} from '../../../store';
 import {
-  Icon,
   Layout,
   List,
   TopNavigation,
   TopNavigationAction,
 } from '@ui-kitten/components';
 import {ColorValue, StyleSheet, useWindowDimensions} from 'react-native';
-import {RideListItem} from '../../../components';
+import {BackIcon, RideListItem} from '../../../components';
 import {StackActions} from '@react-navigation/native';
-
-const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />;
 
 export const TrainInfo = (props: any) => {
   const {width, height} = useWindowDimensions();

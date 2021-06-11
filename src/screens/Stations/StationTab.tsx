@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StationListItem} from './components';
-import {Station} from '../../types';
+import {ScreenEnum, Station} from '../../types';
 import {chain} from 'lodash';
 import {
   Divider,
@@ -18,8 +18,9 @@ import {StyleSheet} from 'react-native';
 import {clearString} from '../../utils/stringUtils';
 import {useSelector} from 'react-redux';
 import {AppState} from '../../store';
+import {StackActions} from '@react-navigation/native';
 
-export const StationTab = () => {
+export const StationTab = ({navigation}: {navigation: any}) => {
   const theme = useTheme();
   const initialStations: Array<Station> = useSelector(
     (state: AppState) => state.timetable.stations,
@@ -27,6 +28,13 @@ export const StationTab = () => {
   const stationWithTrains = useSelector(
     (state: AppState) => state.timetable.stationWithTrains,
   );
+
+  const onPressStation = (station: Station) => {
+    const pushAction = StackActions.push(ScreenEnum.StationInfo, {station});
+
+    navigation.dispatch(pushAction);
+  };
+
   const [searchString, setSearchString] = useState('');
 
   const stations = chain(initialStations)
@@ -44,6 +52,7 @@ export const StationTab = () => {
       <StationListItem
         station={item}
         numberOfTrains={stationWithTrains[item.name]?.length || 0}
+        onPressStation={() => onPressStation(item)}
       />
     );
   };

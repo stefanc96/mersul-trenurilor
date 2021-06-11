@@ -6,6 +6,7 @@ import {
   TrainInfo,
   TrainsTab,
   SplashScreen,
+  StationInfo,
 } from '../screens';
 import React from 'react';
 import {
@@ -43,6 +44,7 @@ export const AppNavigator = () => {
         <Stack.Screen name={ScreenEnum.SplashScreen} component={SplashScreen} />
         <Stack.Screen name={ScreenEnum.Dashboard} component={BottomNavigator} />
         <Stack.Screen name={ScreenEnum.TrainInfo} component={TrainInfo} />
+        <Stack.Screen name={ScreenEnum.StationInfo} component={StationInfo} />
       </Stack.Navigator>
     </NavigationContainer>
   );

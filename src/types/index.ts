@@ -91,6 +91,7 @@ export enum ScreenEnum {
   StationsTab = 'StationsTab',
   ProfileTab = 'ProfileTab',
   TrainInfo = 'TrainInfo',
+  StationInfo = 'StationInfo',
 }
 
 export type TimetableInfo = {
