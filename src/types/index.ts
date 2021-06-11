@@ -71,7 +71,6 @@ export interface Train {
     info: RouteInfo;
     stops: Stop[];
   };
-  stations: Station[];
 }
 
 export interface TrainTime {

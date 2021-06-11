@@ -12,11 +12,29 @@ import {
   BottomTabBarProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import {BottomNavigation, BottomNavigationTab} from '@ui-kitten/components';
+import {
+  BottomNavigation,
+  BottomNavigationTab,
+  Icon,
+} from '@ui-kitten/components';
 import {createStackNavigator} from '@react-navigation/stack';
+import {IconPack} from '../theme/icons/Icon.interface';
+import {strings} from '../locales';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+const TrainStationIcon = (props: any) => (
+  <Icon {...props} name="globe-outline" pack={IconPack.Ion} />
+);
+
+const TrainIcon = (props: any) => (
+  <Icon {...props} name="train-outline" pack={IconPack.Ion} />
+);
+
+const SettingsIcon = (props: any) => (
+  <Icon {...props} name="cog-outline" pack={IconPack.Ion} />
+);
 
 export const AppNavigator = () => {
   return (
@@ -35,11 +53,12 @@ const BottomTabBar: React.FC<BottomTabBarProps> = props => {
 
   return (
     <BottomNavigation
+      shouldRasterizeIOS
       selectedIndex={state.index}
       onSelect={index => navigation.navigate(state.routeNames[index])}>
-      <BottomNavigationTab title={ScreenEnum.TrainsTab} />
-      <BottomNavigationTab title={ScreenEnum.StationsTab} />
-      <BottomNavigationTab title={ScreenEnum.ProfileTab} />
+      <BottomNavigationTab title={strings.trains} icon={TrainIcon} />
+      <BottomNavigationTab title={strings.stations} icon={TrainStationIcon} />
+      <BottomNavigationTab title={strings.settings} icon={SettingsIcon} />
     </BottomNavigation>
   );
 };

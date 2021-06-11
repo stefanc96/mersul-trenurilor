@@ -1,8 +1,6 @@
 import React, {Ref, useRef} from 'react';
-import MapView, {Marker} from 'react-native-maps';
-import MapViewDirections, {
-  MapViewDirectionsWaypoints,
-} from 'react-native-maps-directions';
+import MapView, {LatLng, Marker} from 'react-native-maps';
+import MapViewDirections from 'react-native-maps-directions';
 import {chain, reduce} from 'lodash';
 import {appStyles} from '../../../theme';
 import {Station, Stop, Train} from '../../../types';
@@ -77,11 +75,19 @@ export const TrainInfo = (props: any) => {
     <TopNavigationAction icon={BackIcon} onPress={onPressBack} />
   );
 
-  const stationCoordinates = chain(train.stations)
-    .map(station => ({
-      latitude: Number(station.coordinates.lat),
-      longitude: Number(station.coordinates.lon),
-    }))
+  const stationCoordinates = chain(train.route.stops)
+    .map(stop => {
+      const coordinates = stations.find(
+        station => station.cod === stop.codStaOrigine,
+      )?.coordinates;
+      if (coordinates) {
+        return {
+          latitude: Number(coordinates?.lat),
+          longitude: Number(coordinates?.lon),
+        };
+      }
+    })
+    .without(undefined)
     .value();
 
   return (
@@ -93,7 +99,7 @@ export const TrainInfo = (props: any) => {
         accessoryLeft={renderBackAction}
       />
       {stationCoordinates.map((station, index) => (
-        <Marker key={index} coordinate={station} />
+        <Marker key={index} coordinate={station as LatLng} pinColor={'green'} />
       ))}
       <MapView ref={mapView} style={styles.mapView}>
         <MapViewDirections
@@ -103,7 +109,6 @@ export const TrainInfo = (props: any) => {
           }}
           strokeColor={trainColor as string}
           strokeWidth={3}
-          waypoints={stationCoordinates as MapViewDirectionsWaypoints[]}
           destination={{
             latitude: Number(endCoordinates?.lat),
             longitude: Number(endCoordinates?.lon),

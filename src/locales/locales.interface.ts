@@ -6,4 +6,7 @@ export interface LocalesInterface {
   noTrain: string;
   noStation: string;
   loadingApp: string;
+  trains: string;
+  stations: string;
+  settings: string;
 }
