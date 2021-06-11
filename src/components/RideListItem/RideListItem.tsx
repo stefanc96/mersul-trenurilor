@@ -21,38 +21,36 @@ export const RideListItem: React.FC<RideListItemProps> = ({
     <View>
       {index !== 0 && (
         <View
-          style={{
-            width: 10,
-            marginLeft: '15%',
-            marginRight: '75%',
-            height: 40,
-            alignSelf: 'center',
-            backgroundColor: trainColor,
-          }}
+          style={[
+            {
+              backgroundColor: trainColor,
+            },
+            styles.stationSeparator,
+          ]}
         />
       )}
-      <Row style={{alignItems: 'center'}}>
-        <View
-          style={{
-            width: '15%',
-            alignItems: 'center',
-          }}>
+      <Row>
+        <View style={styles.kmColumn}>
           <Text style={{color: theme['text-basic-color']}}>
-            {parseFloat(km).toFixed(1)}
+            {km.toFixed(1)}
           </Text>
         </View>
-        <View style={{width: '10%', alignItems: 'center'}}>
+        <View style={styles.rideDot}>
           <RideDot trainColor={trainColor} rideStopStatus={rideStopStatus} />
         </View>
-        <View style={{width: '12%', alignItems: 'center'}}>
+        <View style={styles.arrivalTimeColumn}>
           <Text style={{color: theme['text-basic-color']}}>{arrivalTime}</Text>
         </View>
-        <View style={{width: '46%', alignItems: 'center'}}>
-          <Text style={{color: theme['text-basic-color'], textAlign: 'center'}}>
+        <View style={styles.stationNameColumn}>
+          <Text
+            style={[
+              {color: theme['text-basic-color']},
+              styles.stationNameText,
+            ]}>
             {stop.denStaOrigine}
           </Text>
         </View>
-        <View style={{width: '12%', alignItems: 'center'}}>
+        <View style={styles.leavingTimeColumn}>
           <Text style={{color: theme['text-basic-color']}}>{leavingTime}</Text>
         </View>
       </Row>
@@ -60,4 +58,35 @@ export const RideListItem: React.FC<RideListItemProps> = ({
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  stationSeparator: {
+    width: 10,
+    marginLeft: '15%',
+    marginRight: '75%',
+    height: 40,
+    alignSelf: 'center',
+  },
+  kmColumn: {
+    width: '15%',
+    alignItems: 'center',
+  },
+  rideDot: {
+    width: '10%',
+    alignItems: 'center',
+  },
+  arrivalTimeColumn: {
+    width: '12%',
+    alignItems: 'center',
+  },
+  stationNameColumn: {
+    width: '46%',
+    alignItems: 'center',
+  },
+  stationNameText: {
+    textAlign: 'center',
+  },
+  leavingTimeColumn: {
+    width: '12%',
+    alignItems: 'center',
+  },
+});

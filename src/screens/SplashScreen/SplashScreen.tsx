@@ -11,6 +11,7 @@ import {strings} from '../../locales';
 import {StackScreenProps} from '@react-navigation/stack';
 
 const mersulTrenurilor = require('../../../mersul-trenurilor.json');
+const INITIAL_ANIMATION_DURATION = 2000;
 
 export const SplashScreen: React.FC<StackScreenProps<any>> = ({navigation}) => {
   const timetable = useSelector((state: AppState) => state.timetable);
@@ -35,6 +36,7 @@ export const SplashScreen: React.FC<StackScreenProps<any>> = ({navigation}) => {
       <LottieView
         onAnimationFinish={onAnimationFinish}
         autoPlay
+        duration={INITIAL_ANIMATION_DURATION}
         loop={false}
         source={require('../../../assets/animations/loading-train.json')}
       />
@@ -53,6 +55,7 @@ const styles = StyleSheet.create({
   },
   loading: {
     bottom: 60,
+    fontWeight: '700',
     position: 'absolute',
   },
 });

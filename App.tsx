@@ -41,7 +41,10 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <StatusBar
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+          backgroundColor={themeId === 'light' ? '#FFFFFF' : '#222B45'}
+        />
         <IconRegistry icons={[EvaIconsPack, IonIconsPack]} />
         <ThemeContext.Provider value={{theme: themeId, toggleTheme}}>
           <ApplicationProvider {...eva} theme={evaTheme[themeId]}>
