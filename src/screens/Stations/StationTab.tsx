@@ -24,17 +24,28 @@ export const StationTab = () => {
   const initialStations: Array<Station> = useSelector(
     (state: AppState) => state.timetable.stations,
   );
+  const stationWithTrains = useSelector(
+    (state: AppState) => state.timetable.stationWithTrains,
+  );
   const [searchString, setSearchString] = useState('');
 
   const stations = chain(initialStations)
     .filter(station => {
-      return clearString(station.name).includes(clearString(searchString));
+      return (
+        clearString(station.name).includes(clearString(searchString)) &&
+        !!stationWithTrains[station.name]?.length
+      );
     })
     .sortBy('name')
     .value();
 
   const renderStationListItem = ({item}: {item: Station}) => {
-    return <StationListItem station={item} />;
+    return (
+      <StationListItem
+        station={item}
+        numberOfTrains={stationWithTrains[item.name]?.length || 0}
+      />
+    );
   };
 
   const stationKeyExtractor = (item: Station, index: number) =>
