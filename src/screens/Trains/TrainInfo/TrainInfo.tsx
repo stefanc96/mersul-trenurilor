@@ -1,7 +1,7 @@
 import React, {Ref, useRef} from 'react';
 import MapView, {LatLng, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import {chain, reduce} from 'lodash';
+import {head, last, reduce, chain} from 'lodash';
 import {appStyles} from '../../../theme';
 import {Station, Stop, Train} from '../../../types';
 import {useSelector} from 'react-redux';
@@ -34,14 +34,14 @@ export const TrainInfo = (props: any) => {
     },
     0,
   );
-  const statieOrigine = stops[0];
-  const statieDestinatie = stops[train.route.stops.length - 1];
+  const originStation: Stop = head(stops) as Stop;
+  const destinationStation: Stop = last(stops) as Stop;
 
   const startCoordinates = stations.find(
-    station => station.cod === statieOrigine.codStaOrigine,
+    station => station.cod === originStation?.codStaOrigine,
   )?.coordinates;
   const endCoordinates = stations.find(
-    station => station.cod === statieDestinatie.codStaDest,
+    station => station.cod === destinationStation?.codStaDest,
   )?.coordinates;
 
   const renderStop = ({item, index}: {item: Stop; index: number}) => {
@@ -59,6 +59,16 @@ export const TrainInfo = (props: any) => {
         km={totalKmByStation}
       />
     );
+  };
+
+  const origin = {
+    latitude: Number(startCoordinates?.lat),
+    longitude: Number(startCoordinates?.lon),
+  };
+
+  const destination = {
+    latitude: Number(endCoordinates?.lat),
+    longitude: Number(endCoordinates?.lon),
   };
 
   const onPressBack = () => {
@@ -91,25 +101,23 @@ export const TrainInfo = (props: any) => {
     <Layout style={appStyles.container}>
       <TopNavigation
         alignment="center"
-        title={`${statieOrigine.denStaOrigine} - ${statieDestinatie.denStaDestinatie}`}
+        title={`${originStation.denStaOrigine} - ${destinationStation.denStaDestinatie}`}
         subtitle={`${train.info.categorieTren}${train.info.numar}`}
         accessoryLeft={renderBackAction}
       />
-      {stationCoordinates.map((station, index) => (
-        <Marker key={index} coordinate={station as LatLng} pinColor={'green'} />
-      ))}
       <MapView ref={mapView} style={styles.mapView}>
+        {stationCoordinates.map((station, index) => (
+          <Marker
+            key={index}
+            coordinate={station as LatLng}
+            pinColor={'green'}
+          />
+        ))}
         <MapViewDirections
-          origin={{
-            latitude: Number(startCoordinates?.lat),
-            longitude: Number(startCoordinates?.lon),
-          }}
+          origin={origin}
           strokeColor={trainColor as string}
           strokeWidth={3}
-          destination={{
-            latitude: Number(endCoordinates?.lat),
-            longitude: Number(endCoordinates?.lon),
-          }}
+          destination={destination}
           onReady={result => {
             mapView?.current?.fitToCoordinates?.(result.coordinates, {
               edgePadding: {

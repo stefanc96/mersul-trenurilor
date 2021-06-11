@@ -29,8 +29,11 @@ export const StationTab = ({navigation}: {navigation: any}) => {
     (state: AppState) => state.timetable.stationWithTrains,
   );
 
-  const onPressStation = (station: Station) => {
-    const pushAction = StackActions.push(ScreenEnum.StationInfo, {station});
+  const onPressStation = (station: Station, trainIds: string[]) => {
+    const pushAction = StackActions.push(ScreenEnum.StationInfo, {
+      station,
+      trainIds,
+    });
 
     navigation.dispatch(pushAction);
   };
@@ -52,7 +55,9 @@ export const StationTab = ({navigation}: {navigation: any}) => {
       <StationListItem
         station={item}
         numberOfTrains={stationWithTrains[item.name]?.length || 0}
-        onPressStation={() => onPressStation(item)}
+        onPressStation={() =>
+          onPressStation(item, stationWithTrains[item.name])
+        }
       />
     );
   };
