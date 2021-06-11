@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 export const appStyles = StyleSheet.create({
   label: {
-    width: 40,
+    width: 60,
     textAlign: 'right',
   },
   container: {

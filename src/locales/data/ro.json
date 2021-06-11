@@ -1,6 +1,16 @@
 {
-  "leavingStation": "statie plecare ...",
-  "arrivingStation": "statie destinatie ...",
+  "leavingStation": "stație plecare ...",
+  "arrivingStation": "stație destinație ...",
   "from": "De la:",
-  "to": "Pana la:"
+  "to": "Până la:",
+  "noTrain": "Nici-un tren de afișat",
+  "noStation": "Nici-o stație de afișat",
+  "loadingApp": "Încărcare aplicație ...",
+  "trains": "Trenuri",
+  "stations": "Stații",
+  "settings": "Setări",
+  "searchStation": "Căutare stație...",
+  "enableDarkMode": "Activează dark mode",
+  "selectLanguage": "Selectează limba",
+  "changingLocales": "Se schimbă limba..."
 }

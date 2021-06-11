@@ -9,5 +9,8 @@
   "trains": "Trains",
   "stations": "Stations",
   "settings": "Settings",
-  "searchStation": "Search station..."
+  "searchStation": "Search station...",
+  "enableDarkMode": "Enable dark mode",
+  "selectLanguage": "Select language",
+  "changingLocales": "Changing the language..."
 }

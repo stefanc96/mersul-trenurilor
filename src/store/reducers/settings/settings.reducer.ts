@@ -20,7 +20,7 @@ export const settingsReducer = (
     case SettingsAction.SetLocaleId:
       return {
         ...state,
-        ...action.payload.localeId,
+        localeId: action.payload.localeId,
       };
     default:
       return state;

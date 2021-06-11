@@ -10,4 +10,7 @@ export interface LocalesInterface {
   stations: string;
   settings: string;
   searchStation: string;
+  enableDarkMode: string;
+  selectLanguage: string;
+  changingLocales: string;
 }
