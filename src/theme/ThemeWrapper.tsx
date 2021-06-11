@@ -19,13 +19,17 @@ export const ThemeWrapper: React.FC = ({children}) => {
     settingsThemeId || deviceThemeId,
   );
 
+  console.log(themeId);
+
   const toggleTheme = () => {
     const nextTheme = themeId === 'light' ? 'light' : 'dark';
     setThemeId(nextTheme);
   };
 
   useEffect(() => {
-    setThemeId(settingsThemeId as string);
+    if (settingsThemeId) {
+      setThemeId(settingsThemeId as string);
+    }
   }, [settingsThemeId]);
 
   const onChangeTheme = (deviceSettings: Appearance.AppearancePreferences) => {
