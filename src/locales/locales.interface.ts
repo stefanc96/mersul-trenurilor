@@ -9,4 +9,5 @@ export interface LocalesInterface {
   trains: string;
   stations: string;
   settings: string;
+  searchStation: string;
 }

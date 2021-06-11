@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StationListItem} from './components';
 import {Station} from '../../types';
-import {deburr} from 'lodash';
+import {chain} from 'lodash';
 import {
   Divider,
   Icon,
@@ -15,37 +15,23 @@ import {MEDIUM_SIZE, SMALL_SIZE} from '../../theme';
 import {strings} from '../../locales';
 import {IconPack} from '../../theme/icons/Icon.interface';
 import {StyleSheet} from 'react-native';
-
-const mersulTrenurilor = require('../../../mersul-trenurilor.json');
-
-const compareStation = (stationTo: Station, stationFrom: Station) => {
-  if (stationTo.name > stationFrom.name) {
-    return 1;
-  } else if (stationTo.name < stationFrom.name) {
-    return -1;
-  }
-  return 0;
-};
-const initialStations: Station[] = mersulTrenurilor.cfr.stations;
+import {clearString} from '../../utils/stringUtils';
+import {useSelector} from 'react-redux';
+import {AppState} from '../../store';
 
 export const StationTab = () => {
   const theme = useTheme();
-  const [stations, setStations] = useState(
-    initialStations.sort(compareStation),
+  const initialStations: Array<Station> = useSelector(
+    (state: AppState) => state.timetable.stations,
   );
   const [searchString, setSearchString] = useState('');
 
-  const onSearchStation = (inputValue: string) => {
-    const searchedStations = initialStations.filter(station => {
-      if (
-        deburr(station.name).toLowerCase().includes(inputValue.toLowerCase())
-      ) {
-        return station;
-      }
-    });
-    setSearchString(inputValue);
-    setStations(searchedStations.sort(compareStation));
-  };
+  const stations = chain(initialStations)
+    .filter(station => {
+      return clearString(station.name).includes(clearString(searchString));
+    })
+    .sortBy('name')
+    .value();
 
   const renderStationListItem = ({item}: {item: Station}) => {
     return <StationListItem station={item} />;
@@ -64,11 +50,11 @@ export const StationTab = () => {
             style={[styles.searchIcon, {tintColor: theme['text-basic-color']}]}
           />
         )}
-        placeholder={strings.leavingStation}
+        placeholder={strings.searchStation}
         value={searchString}
         autoCorrect={false}
         style={{marginBottom: SMALL_SIZE}}
-        onChangeText={onSearchStation}
+        onChangeText={setSearchString}
       />
       <List
         bounces={false}

@@ -8,5 +8,6 @@
   "loadingApp": "Loading the app ...",
   "trains": "Trains",
   "stations": "Stations",
-  "settings": "Settings"
+  "settings": "Settings",
+  "searchStation": "Search station..."
 }
