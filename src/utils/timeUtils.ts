@@ -93,16 +93,25 @@ export const getTrainStopStatus = (
       arrivingTime,
       leavingTime,
       originTime,
+      destinationTimeWithDelay,
     );
   } else {
-    switch (true) {
-      case nowTrainTime < arrivingTime || originTime > nowTrainTime:
-        return TrainStopStatus.NeedsToArrive;
-      case nowTrainTime > leavingTime:
-        return TrainStopStatus.HasPassed;
-      default:
-        return TrainStopStatus.InStation;
-    }
+    return getStatus(nowTrainTime, arrivingTime, leavingTime);
+  }
+};
+
+const getStatus = (
+  nowTrainTime: string,
+  arrivingTime: string,
+  leavingTime: string,
+) => {
+  switch (true) {
+    case nowTrainTime < arrivingTime:
+      return TrainStopStatus.NeedsToArrive;
+    case nowTrainTime > leavingTime:
+      return TrainStopStatus.HasPassed;
+    default:
+      return TrainStopStatus.InStation;
   }
 };
 
@@ -111,19 +120,18 @@ export const getNightTrainStopStatus = (
   arrivingTime: string,
   leavingTime: string,
   originTime: string,
+  destinationTime: string,
 ): TrainStopStatus => {
-  if (nowTrainTime < originTime && arrivingTime >= originTime) {
-    return TrainStopStatus.HasPassed;
+  if (arrivingTime >= originTime && arrivingTime <= '24:00') {
+    if (nowTrainTime < originTime) {
+      return TrainStopStatus.HasPassed;
+    }
   } else {
-    switch (true) {
-      case nowTrainTime < arrivingTime:
-        return TrainStopStatus.NeedsToArrive;
-      case nowTrainTime > leavingTime:
-        return TrainStopStatus.HasPassed;
-      default:
-        return TrainStopStatus.InStation;
+    if (nowTrainTime > destinationTime) {
+      return TrainStopStatus.NeedsToArrive;
     }
   }
+  return getStatus(nowTrainTime, arrivingTime, leavingTime);
 };
 
 function convertNumberToTimeFormat(value: number) {
