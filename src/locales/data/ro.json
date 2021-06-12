@@ -12,5 +12,7 @@
   "searchStation": "Căutare stație...",
   "enableDarkMode": "Activează dark mode",
   "selectLanguage": "Selectează limba",
-  "changingLocales": "Se schimbă limba..."
+  "changingLocales": "Se schimbă limba...",
+  "trainRoute": "Rută tren",
+  "trainDetails": "Detalii tren"
 }

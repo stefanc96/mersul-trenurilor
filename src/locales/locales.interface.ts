@@ -13,4 +13,6 @@ export interface LocalesInterface {
   enableDarkMode: string;
   selectLanguage: string;
   changingLocales: string;
+  trainRoute: string;
+  trainDetails: string;
 }

@@ -12,5 +12,7 @@
   "searchStation": "Search station...",
   "enableDarkMode": "Enable dark mode",
   "selectLanguage": "Select language",
-  "changingLocales": "Changing the language..."
+  "changingLocales": "Changing the language...",
+  "trainRoute": "Train Route",
+  "trainDetails": "Train Details"
 }

@@ -1,4 +1,4 @@
-import React, {Ref, useEffect, useRef, useState} from 'react';
+import React, {Ref, useRef, useState} from 'react';
 import MapView, {LatLng, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import {chain, head, last, reduce} from 'lodash';
@@ -8,43 +8,29 @@ import {useSelector} from 'react-redux';
 import {AppState} from '../../../store';
 import {
   Layout,
-  List,
+  Tab,
+  TabView,
   TopNavigation,
   TopNavigationAction,
 } from '@ui-kitten/components';
 import {ColorValue, StyleSheet, useWindowDimensions} from 'react-native';
-import {BackIcon, RideListItem} from '../../../components';
+import {BackIcon} from '../../../components';
 import {StackActions} from '@react-navigation/native';
-import {
-  convertToHoursAndMinutes,
-  convertToHoursAndMinutesWidthDelay,
-  getTrainStopStatus,
-} from '../../../utils';
+import {TrainDetails, TrainRoute} from './tabs';
+import {strings} from '../../../locales';
 
-const TIME_TO_UPDATE = 5 * 1000;
 export const TrainInfo = (props: any) => {
   const {width, height} = useWindowDimensions();
   const mapView: Ref<MapView> = useRef(null);
-  const [time, setTime] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(0);
   const {train, trainColor}: {train: Train; trainColor: ColorValue} =
     props.route.params;
-
-  useEffect(() => {
-    const timeInterval = setInterval(() => {
-      setTime(prevTime => prevTime + 1);
-    }, TIME_TO_UPDATE);
-
-    return () => {
-      clearInterval(timeInterval);
-    };
-  }, []);
 
   const stations: Array<Station> = useSelector(
     (state: AppState) => state.timetable.stations,
   );
-  let totalKmByStation = 0;
   const stops = train.route.stops;
-  const total = reduce(
+  const totalKm = reduce(
     stops,
     (sum, stop) => {
       return sum + Number(stop.km);
@@ -53,50 +39,12 @@ export const TrainInfo = (props: any) => {
   );
   const originStation: Stop = head(stops) as Stop;
   const destinationStation: Stop = last(stops) as Stop;
-  const originTime = convertToHoursAndMinutes(originStation.oraS);
-  const destinationTime = convertToHoursAndMinutes(destinationStation.oraP);
-  const destinationTimeWithDelay = convertToHoursAndMinutesWidthDelay(
-    destinationStation.oraP,
-    1,
-  );
-
   const startCoordinates = stations.find(
     station => station.cod === originStation?.codStaOrigine,
   )?.coordinates;
   const endCoordinates = stations.find(
     station => station.cod === destinationStation?.codStaDest,
   )?.coordinates;
-
-  const renderStop = ({item, index}: {item: Stop; index: number}) => {
-    if (index === 0) {
-      totalKmByStation = 0;
-    }
-    totalKmByStation += Number(stops[index - 1]?.km || 0) / 1000;
-    const previousStop = stops[index - 1];
-    const arrivalTime = convertToHoursAndMinutes(
-      previousStop?.oraS || item.oraS,
-    );
-    const leavingTime = convertToHoursAndMinutes(item.oraP);
-    const rideStopStatus = getTrainStopStatus(
-      arrivalTime,
-      leavingTime,
-      originTime,
-      destinationTime,
-      destinationTimeWithDelay,
-    );
-
-    return (
-      <RideListItem
-        stop={item}
-        index={index}
-        trainColor={trainColor}
-        arrivalTime={arrivalTime}
-        leavingTime={leavingTime}
-        rideStopStatus={rideStopStatus}
-        km={totalKmByStation}
-      />
-    );
-  };
 
   const origin = {
     latitude: Number(startCoordinates?.lat),
@@ -167,12 +115,22 @@ export const TrainInfo = (props: any) => {
           mode={'TRANSIT'}
         />
       </MapView>
-      <List
-        contentContainerStyle={styles.list}
-        data={train.route.stops}
-        renderItem={renderStop}
-        extraData={[time]}
-      />
+      <TabView
+        selectedIndex={selectedTab}
+        style={styles.tabView}
+        onSelect={index => setSelectedTab(index)}>
+        <Tab title={strings.trainRoute}>
+          <TrainRoute
+            trainColor={trainColor}
+            originStation={originStation}
+            destinationStation={destinationStation}
+            stops={train.route.stops}
+          />
+        </Tab>
+        <Tab title={strings.trainDetails}>
+          <TrainDetails totalKm={totalKm} />
+        </Tab>
+      </TabView>
     </Layout>
   );
 };
@@ -182,7 +140,7 @@ const styles = StyleSheet.create({
     height: '30%',
     width: '100%',
   },
-  list: {
-    paddingVertical: 20,
+  tabView: {
+    flex: 1,
   },
 });
