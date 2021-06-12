@@ -1,6 +1,5 @@
 import React, {Ref, useRef, useState} from 'react';
-import MapView, {LatLng, Marker} from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
+import MapView, {LatLng, Marker, Polyline} from 'react-native-maps';
 import {chain, head, last, reduce} from 'lodash';
 import {appStyles} from '../../../theme';
 import {Station, Stop, Train} from '../../../types';
@@ -39,22 +38,6 @@ export const TrainInfo = (props: any) => {
   );
   const originStation: Stop = head(stops) as Stop;
   const destinationStation: Stop = last(stops) as Stop;
-  const startCoordinates = stations.find(
-    station => station.cod === originStation?.codStaOrigine,
-  )?.coordinates;
-  const endCoordinates = stations.find(
-    station => station.cod === destinationStation?.codStaDest,
-  )?.coordinates;
-
-  const origin = {
-    latitude: Number(startCoordinates?.lat),
-    longitude: Number(startCoordinates?.lon),
-  };
-
-  const destination = {
-    latitude: Number(endCoordinates?.lat),
-    longitude: Number(endCoordinates?.lon),
-  };
 
   const onPressBack = () => {
     const {navigation} = props;
@@ -104,16 +87,15 @@ export const TrainInfo = (props: any) => {
           });
         }}>
         {stationCoordinates.map((station, index) => (
-          <Marker key={index} coordinate={station as LatLng} />
+          <>
+            <Marker key={index} coordinate={station as LatLng} />
+            <Polyline
+              coordinates={stationCoordinates as LatLng[]}
+              strokeColor={trainColor as string}
+              strokeWidth={3}
+            />
+          </>
         ))}
-        <MapViewDirections
-          origin={origin}
-          strokeColor={trainColor as string}
-          strokeWidth={3}
-          destination={destination}
-          apikey={'AIzaSyDLwnfHcDIgKJSfBIBE77KUWbWHCuWgZ0o'}
-          mode={'TRANSIT'}
-        />
       </MapView>
       <TabView
         selectedIndex={selectedTab}
