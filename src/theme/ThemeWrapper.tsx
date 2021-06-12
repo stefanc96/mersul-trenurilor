@@ -14,6 +14,7 @@ import {ThemeContext} from './ThemeContextProvider';
 import {AppState} from '../store';
 import {useSelector} from 'react-redux';
 import {strings} from '../locales';
+import {MaterialCommunityIconsPack} from './icons/MaterialCommunityIcon';
 
 const evaTheme: Record<string, Record<string, string>> = eva;
 
@@ -76,7 +77,9 @@ export const ThemeWrapper: React.FC = ({children}) => {
         barStyle={themeId === 'light' ? 'dark-content' : 'light-content'}
         backgroundColor={themeId === 'light' ? '#FFFFFF' : '#222B45'}
       />
-      <IconRegistry icons={[EvaIconsPack, IonIconsPack]} />
+      <IconRegistry
+        icons={[EvaIconsPack, IonIconsPack, MaterialCommunityIconsPack]}
+      />
       <ThemeContext.Provider value={{theme: themeId, toggleTheme}}>
         <ApplicationProvider {...eva} theme={evaTheme[themeId]}>
           {!loading ? (

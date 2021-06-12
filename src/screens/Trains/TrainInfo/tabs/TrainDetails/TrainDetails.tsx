@@ -3,6 +3,7 @@ import {Divider, Layout, ListItem} from '@ui-kitten/components';
 import {PropsTrainDetails} from './TrainDetails.interface';
 import {reduce} from 'lodash';
 import {getTrainTimeDifference} from '../../../../../utils';
+import {strings} from '../../../../../locales';
 
 export const TrainDetails: React.FC<PropsTrainDetails> = ({
   train,
@@ -24,20 +25,22 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
   return (
     <Layout>
       <ListItem
-        title={`Nume: ${train.info.categorieTren} ${train.info.numar}`}
+        title={`${strings.name}: ${train.info.categorieTren} ${train.info.numar}`}
       />
       <Divider />
-      <ListItem title={'Operator: SNCFR'} />
+      <ListItem title={`${strings.operator}: SNCFR`} />
       <Divider />
-      <ListItem title={`De la: ${originStation.denStaOrigine}`} />
-      <Divider />
-      <ListItem title={`Pana la: ${destinationStation.denStaDestinatie}`} />
+      <ListItem title={`${strings.from}: ${originStation.denStaOrigine}`} />
       <Divider />
       <ListItem
-        title={`Timp total: ${totalTime.hours}h${totalTime.minutes}m`}
+        title={`${strings.to}: ${destinationStation.denStaDestinatie}`}
       />
       <Divider />
-      <ListItem title={`Total km: ${(totalKm / 1000).toFixed(2)}`} />
+      <ListItem
+        title={`${strings.totalTime}: ${totalTime.hours}h${totalTime.minutes}m`}
+      />
+      <Divider />
+      <ListItem title={`${strings.totalKm}: ${(totalKm / 1000).toFixed(2)}`} />
       <Divider />
     </Layout>
   );

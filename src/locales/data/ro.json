@@ -14,5 +14,9 @@
   "selectLanguage": "Selectează limba",
   "changingLocales": "Se schimbă limba...",
   "trainRoute": "Rută tren",
-  "trainDetails": "Detalii tren"
+  "trainDetails": "Detalii tren",
+  "name": "Nume",
+  "operator": "Operator",
+  "totalTime": "Timp total",
+  "totalKm": "Total km"
 }

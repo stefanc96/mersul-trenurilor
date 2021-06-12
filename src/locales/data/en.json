@@ -14,5 +14,9 @@
   "selectLanguage": "Select language",
   "changingLocales": "Changing the language...",
   "trainRoute": "Train Route",
-  "trainDetails": "Train Details"
+  "trainDetails": "Train Details",
+  "name": "Name",
+  "operator": "Operator",
+  "totalTime": "Total time",
+  "totalKm": "Total km"
 }

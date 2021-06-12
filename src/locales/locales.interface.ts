@@ -15,4 +15,8 @@ export interface LocalesInterface {
   changingLocales: string;
   trainRoute: string;
   trainDetails: string;
+  name: string;
+  operator: string;
+  totalTime: string;
+  totalKm: string;
 }

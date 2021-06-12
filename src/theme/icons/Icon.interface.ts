@@ -9,4 +9,5 @@ export interface PropsIcon {
 export enum IconPack {
   Ion = 'ion',
   Eva = 'eva',
+  MaterialCommunity = 'material-community',
 }
