@@ -1,4 +1,4 @@
-import React, {Ref, useRef} from 'react';
+import React, {Ref, useEffect, useRef, useState} from 'react';
 import MapView, {LatLng, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import {head, last, reduce, chain} from 'lodash';
@@ -16,11 +16,23 @@ import {ColorValue, StyleSheet, useWindowDimensions} from 'react-native';
 import {BackIcon, RideListItem} from '../../../components';
 import {StackActions} from '@react-navigation/native';
 
+const TIME_TO_UPDATE = 5 * 1000;
 export const TrainInfo = (props: any) => {
   const {width, height} = useWindowDimensions();
   const mapView: Ref<MapView> = useRef(null);
+  const [time, setTime] = useState(0);
   const {train, trainColor}: {train: Train; trainColor: ColorValue} =
     props.route.params;
+
+  useEffect(() => {
+    const timeInterval = setInterval(() => {
+      setTime(prevTime => prevTime + 1);
+    }, TIME_TO_UPDATE);
+
+    return () => {
+      clearInterval(timeInterval);
+    };
+  }, []);
 
   const stations: Array<Station> = useSelector(
     (state: AppState) => state.timetable.stations,
@@ -136,6 +148,7 @@ export const TrainInfo = (props: any) => {
         contentContainerStyle={styles.list}
         data={train.route.stops}
         renderItem={renderStop}
+        extraData={[time]}
       />
     </Layout>
   );

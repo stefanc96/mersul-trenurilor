@@ -24,7 +24,10 @@ export const getTrainStopStatus = (
   leavingTime: string,
 ): TrainStopStatus => {
   const now = new Date();
-  const nowTrainTime = `${now.getHours()}:${now.getMinutes()}`;
+  const nowTrainTime =
+    convertNumberToTimeFormat(now.getHours()) +
+    ':' +
+    convertNumberToTimeFormat(now.getMinutes());
   switch (true) {
     case nowTrainTime < arrivingTime:
       return TrainStopStatus.NeedsToArrive;
