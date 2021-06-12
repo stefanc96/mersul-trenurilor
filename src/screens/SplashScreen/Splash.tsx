@@ -5,6 +5,7 @@ import {AppState} from '../../store';
 import {setTimetableInfo} from '../../store/reducers';
 import {StackActions} from '@react-navigation/native';
 import {ScreenEnum} from '../../types';
+import SplashScreen from 'react-native-splash-screen';
 import {Layout, Text} from '@ui-kitten/components';
 import LottieView from 'lottie-react-native';
 import {strings} from '../../locales';
@@ -13,7 +14,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 const mersulTrenurilor = require('../../../mersul-trenurilor.json');
 const INITIAL_ANIMATION_DURATION = 2000;
 
-export const SplashScreen: React.FC<StackScreenProps<any>> = ({navigation}) => {
+export const Splash: React.FC<StackScreenProps<any>> = ({navigation}) => {
   const timetable = useSelector((state: AppState) => state.timetable);
   const dispatch = useDispatch();
   const navigateToDashboard = () => {
@@ -22,10 +23,11 @@ export const SplashScreen: React.FC<StackScreenProps<any>> = ({navigation}) => {
     navigation.dispatch(replaceAction);
   };
   useEffect(() => {
+    SplashScreen.hide();
     if (!timetable.metadata?.mtValabilPinaLa) {
       dispatch(setTimetableInfo(mersulTrenurilor.cfr));
     }
-  }, [dispatch, timetable]);
+  }, []);
 
   const onAnimationFinish = () => {
     navigateToDashboard();

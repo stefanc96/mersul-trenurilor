@@ -5,7 +5,7 @@ import {
   StationTab,
   TrainInfo,
   TrainsTab,
-  SplashScreen,
+  Splash,
   StationInfo,
 } from '../screens';
 import React from 'react';
@@ -41,7 +41,7 @@ export const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode={'none'}>
-        <Stack.Screen name={ScreenEnum.SplashScreen} component={SplashScreen} />
+        <Stack.Screen name={ScreenEnum.SplashScreen} component={Splash} />
         <Stack.Screen name={ScreenEnum.Dashboard} component={BottomNavigator} />
         <Stack.Screen name={ScreenEnum.TrainInfo} component={TrainInfo} />
         <Stack.Screen name={ScreenEnum.StationInfo} component={StationInfo} />

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Appearance, StatusBar, StyleSheet, useColorScheme} from 'react-native';
 import {
   ApplicationProvider,
@@ -17,10 +17,14 @@ import {strings} from '../locales';
 
 const evaTheme: Record<string, Record<string, string>> = eva;
 
+const TIME_TO_CHANGE_LANGUAGE = 5000;
+
 export const ThemeWrapper: React.FC = ({children}) => {
-  const settings = useSelector((state: AppState) => state?.settings);
-  const settingsThemeId = settings?.themeId;
-  const localesId = settings?.localeId;
+  const localesId = useSelector((state: AppState) => state?.settings?.localeId);
+  const settingsThemeId = useSelector(
+    (state: AppState) => state?.settings?.themeId,
+  );
+  let isFirstTime = useRef(true);
   const [loading, setLoading] = useState(false);
   const deviceThemeId = useColorScheme() || 'light';
   const [themeId, setThemeId] = React.useState(
@@ -44,14 +48,18 @@ export const ThemeWrapper: React.FC = ({children}) => {
     }
   };
   useEffect(() => {
-    const languageTimeout = setTimeout(() => {
-      setLoading(false);
-    }, 5000);
-    setLoading(true);
-    strings.setLanguage(localesId);
-    return () => {
-      clearTimeout(languageTimeout);
-    };
+    if (isFirstTime.current) {
+      isFirstTime.current = false;
+    } else {
+      const languageTimeout = setTimeout(() => {
+        setLoading(false);
+      }, TIME_TO_CHANGE_LANGUAGE);
+      setLoading(true);
+      strings.setLanguage(localesId);
+      return () => {
+        clearTimeout(languageTimeout);
+      };
+    }
   }, [localesId]);
 
   useEffect(() => {
