@@ -15,6 +15,11 @@ import {
 import {ColorValue, StyleSheet, useWindowDimensions} from 'react-native';
 import {BackIcon, RideListItem} from '../../../components';
 import {StackActions} from '@react-navigation/native';
+import {
+  convertToHoursAndMinutes,
+  convertToHoursAndMinutesWidthDelay,
+  getTrainStopStatus,
+} from '../../../utils';
 
 const TIME_TO_UPDATE = 5 * 1000;
 export const TrainInfo = (props: any) => {
@@ -48,6 +53,11 @@ export const TrainInfo = (props: any) => {
   );
   const originStation: Stop = head(stops) as Stop;
   const destinationStation: Stop = last(stops) as Stop;
+  const originTime = convertToHoursAndMinutes(originStation.oraS);
+  const destinationTime = convertToHoursAndMinutesWidthDelay(
+    destinationStation.oraP,
+    1,
+  );
 
   const startCoordinates = stations.find(
     station => station.cod === originStation?.codStaOrigine,
@@ -61,13 +71,26 @@ export const TrainInfo = (props: any) => {
       totalKmByStation = 0;
     }
     totalKmByStation += Number(stops[index - 1]?.km || 0) / 1000;
+    const previousStop = stops[index - 1];
+    const arrivalTime = convertToHoursAndMinutes(
+      previousStop?.oraS || item.oraS,
+    );
+    const leavingTime = convertToHoursAndMinutes(item.oraP);
+    const rideStopStatus = getTrainStopStatus(
+      arrivalTime,
+      leavingTime,
+      originTime,
+      destinationTime,
+    );
 
     return (
       <RideListItem
         stop={item}
         index={index}
         trainColor={trainColor}
-        previousStop={stops[index - 1]}
+        arrivalTime={arrivalTime}
+        leavingTime={leavingTime}
+        rideStopStatus={rideStopStatus}
         km={totalKmByStation}
       />
     );

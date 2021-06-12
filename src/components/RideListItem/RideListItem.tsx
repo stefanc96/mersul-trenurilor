@@ -3,20 +3,19 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Row} from '../Row';
 import {RideDot} from './components';
 import {RideListItemProps} from './RideListItem.interface';
-import {convertToHoursAndMinutes, getTrainStopStatus} from '../../utils';
 import {useTheme} from '@ui-kitten/components';
 
 export const RideListItem: React.FC<RideListItemProps> = ({
   trainColor,
   stop,
   index,
-  previousStop,
   km,
+  arrivalTime,
+  leavingTime,
+  rideStopStatus,
 }) => {
   const theme = useTheme();
-  const arrivalTime = convertToHoursAndMinutes(previousStop?.oraS || stop.oraS);
-  const leavingTime = convertToHoursAndMinutes(stop.oraP);
-  const rideStopStatus = getTrainStopStatus(arrivalTime, leavingTime);
+
   const isFirst = index === 0;
 
   return (

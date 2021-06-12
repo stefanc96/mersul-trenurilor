@@ -1,10 +1,12 @@
 import {ColorValue} from 'react-native';
-import {Stop} from '../../types';
+import {Stop, TrainStopStatus} from '../../types';
 
 export interface RideListItemProps {
   trainColor: ColorValue;
   stop: Stop;
   index: number;
-  previousStop: Stop;
+  arrivalTime: string;
+  leavingTime: string;
+  rideStopStatus: TrainStopStatus;
   km: number;
 }
