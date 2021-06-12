@@ -3,7 +3,6 @@ import {List} from '@ui-kitten/components';
 import {Stop} from '../../../../../types';
 import {
   convertToHoursAndMinutes,
-  convertToHoursAndMinutesWidthDelay,
   getTrainStopStatus,
 } from '../../../../../utils';
 import {RideListItem} from '../../../../../components';
@@ -14,19 +13,13 @@ const TIME_TO_UPDATE = 5 * 1000;
 
 export const TrainRoute: React.FC<PropsTrainRoute> = ({
   stops,
-  originStation,
-  destinationStation,
+  originTime,
+  destinationTime,
+  destinationTimeWithDelay,
   trainColor,
 }) => {
   const [time, setTime] = useState(0);
   let totalKmByStation = 0;
-
-  const originTime = convertToHoursAndMinutes(originStation.oraS);
-  const destinationTime = convertToHoursAndMinutes(destinationStation.oraP);
-  const destinationTimeWithDelay = convertToHoursAndMinutesWidthDelay(
-    destinationStation.oraP,
-    1,
-  );
 
   useEffect(() => {
     const timeInterval = setInterval(() => {

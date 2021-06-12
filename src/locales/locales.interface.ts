@@ -19,4 +19,9 @@ export interface LocalesInterface {
   operator: string;
   totalTime: string;
   totalKm: string;
+  notificationQuestion: string;
+  selectStation: string;
+  station: string;
+  time: string;
+  notificationTime: string;
 }

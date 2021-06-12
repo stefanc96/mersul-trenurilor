@@ -17,6 +17,10 @@ import {BackIcon} from '../../../components';
 import {StackActions} from '@react-navigation/native';
 import {TrainDetails, TrainRoute} from './tabs';
 import {strings} from '../../../locales';
+import {
+  convertToHoursAndMinutes,
+  convertToHoursAndMinutesWidthDelay,
+} from '../../../utils';
 
 export const TrainInfo = (props: any) => {
   const {train, trainColor}: {train: Train; trainColor: ColorValue} =
@@ -30,6 +34,12 @@ export const TrainInfo = (props: any) => {
   const stops = train.route.stops;
   const originStation: Stop = head(stops) as Stop;
   const destinationStation: Stop = last(stops) as Stop;
+  const originTime = convertToHoursAndMinutes(originStation.oraS);
+  const destinationTime = convertToHoursAndMinutes(destinationStation.oraP);
+  const destinationTimeWithDelay = convertToHoursAndMinutesWidthDelay(
+    destinationStation.oraP,
+    1,
+  );
 
   const onPressBack = () => {
     const {navigation} = props;
@@ -96,14 +106,18 @@ export const TrainInfo = (props: any) => {
         <Tab title={strings.trainRoute}>
           <TrainRoute
             trainColor={trainColor}
-            originStation={originStation}
-            destinationStation={destinationStation}
+            originTime={originTime}
+            destinationTimeWithDelay={destinationTimeWithDelay}
+            destinationTime={destinationTime}
             stops={train.route.stops}
           />
         </Tab>
         <Tab title={strings.trainDetails}>
           <TrainDetails
             train={train}
+            originTime={originTime}
+            destinationTimeWithDelay={destinationTimeWithDelay}
+            destinationTime={destinationTime}
             originStation={originStation}
             destinationStation={destinationStation}
           />

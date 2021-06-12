@@ -18,5 +18,10 @@
   "name": "Name",
   "operator": "Operator",
   "totalTime": "Total time",
-  "totalKm": "Total km"
+  "totalKm": "Total km",
+  "notificationQuestion": "Would you like to be notified when tren arrives at the destination?",
+  "selectStation": "Select station",
+  "station": "Station...",
+  "time": "Time...",
+  "notificationTime": "Time to be notified"
 }
