@@ -40,6 +40,7 @@ export const getTrainStopStatus = (
   leavingTime: string,
   originTime: string,
   destinationTime: string,
+  destinationTimeWithDelay: string,
 ): TrainStopStatus => {
   const isOverTheNight = originTime > destinationTime;
   const now = new Date();
@@ -50,7 +51,7 @@ export const getTrainStopStatus = (
 
   if (
     isOverTheNight &&
-    (nowTrainTime > originTime || nowTrainTime < destinationTime)
+    (nowTrainTime > originTime || nowTrainTime < destinationTimeWithDelay)
   ) {
     return getNightTrainStopStatus(
       nowTrainTime,
@@ -60,7 +61,7 @@ export const getTrainStopStatus = (
     );
   } else {
     switch (true) {
-      case nowTrainTime < arrivingTime:
+      case nowTrainTime < arrivingTime || originTime > nowTrainTime:
         return TrainStopStatus.NeedsToArrive;
       case nowTrainTime > leavingTime:
         return TrainStopStatus.HasPassed;

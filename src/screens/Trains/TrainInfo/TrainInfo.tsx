@@ -54,7 +54,8 @@ export const TrainInfo = (props: any) => {
   const originStation: Stop = head(stops) as Stop;
   const destinationStation: Stop = last(stops) as Stop;
   const originTime = convertToHoursAndMinutes(originStation.oraS);
-  const destinationTime = convertToHoursAndMinutesWidthDelay(
+  const destinationTime = convertToHoursAndMinutes(destinationStation.oraP);
+  const destinationTimeWithDelay = convertToHoursAndMinutesWidthDelay(
     destinationStation.oraP,
     1,
   );
@@ -81,6 +82,7 @@ export const TrainInfo = (props: any) => {
       leavingTime,
       originTime,
       destinationTime,
+      destinationTimeWithDelay,
     );
 
     return (
