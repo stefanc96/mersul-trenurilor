@@ -1,7 +1,7 @@
 import React, {Ref, useEffect, useRef, useState} from 'react';
 import MapView, {LatLng, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import {head, last, reduce, chain} from 'lodash';
+import {chain, head, last, reduce} from 'lodash';
 import {appStyles} from '../../../theme';
 import {Station, Stop, Train} from '../../../types';
 import {useSelector} from 'react-redux';
@@ -142,29 +142,27 @@ export const TrainInfo = (props: any) => {
         subtitle={`${train.info.categorieTren}${train.info.numar}`}
         accessoryLeft={renderBackAction}
       />
-      <MapView ref={mapView} style={styles.mapView}>
+      <MapView
+        ref={mapView}
+        style={styles.mapView}
+        onMapReady={() => {
+          mapView?.current?.fitToCoordinates?.(stationCoordinates as LatLng[], {
+            edgePadding: {
+              right: width / 20,
+              bottom: height / 20,
+              left: width / 20,
+              top: height / 20,
+            },
+          });
+        }}>
         {stationCoordinates.map((station, index) => (
-          <Marker
-            key={index}
-            coordinate={station as LatLng}
-            pinColor={'green'}
-          />
+          <Marker key={index} coordinate={station as LatLng} />
         ))}
         <MapViewDirections
           origin={origin}
           strokeColor={trainColor as string}
           strokeWidth={3}
           destination={destination}
-          onReady={result => {
-            mapView?.current?.fitToCoordinates?.(result.coordinates, {
-              edgePadding: {
-                right: width / 20,
-                bottom: height / 20,
-                left: width / 20,
-                top: height / 20,
-              },
-            });
-          }}
           apikey={'AIzaSyDLwnfHcDIgKJSfBIBE77KUWbWHCuWgZ0o'}
           mode={'TRANSIT'}
         />
