@@ -1,6 +1,6 @@
 import React, {Ref, useRef, useState} from 'react';
 import MapView, {LatLng, Marker, Polyline} from 'react-native-maps';
-import {chain, head, last, reduce} from 'lodash';
+import {chain, head, last} from 'lodash';
 import {appStyles} from '../../../theme';
 import {Station, Stop, Train} from '../../../types';
 import {useSelector} from 'react-redux';
@@ -19,23 +19,15 @@ import {TrainDetails, TrainRoute} from './tabs';
 import {strings} from '../../../locales';
 
 export const TrainInfo = (props: any) => {
+  const {train, trainColor}: {train: Train; trainColor: ColorValue} =
+    props.route.params;
   const {width, height} = useWindowDimensions();
   const mapView: Ref<MapView> = useRef(null);
   const [selectedTab, setSelectedTab] = useState(0);
-  const {train, trainColor}: {train: Train; trainColor: ColorValue} =
-    props.route.params;
-
   const stations: Array<Station> = useSelector(
     (state: AppState) => state.timetable.stations,
   );
   const stops = train.route.stops;
-  const totalKm = reduce(
-    stops,
-    (sum, stop) => {
-      return sum + Number(stop.km);
-    },
-    0,
-  );
   const originStation: Stop = head(stops) as Stop;
   const destinationStation: Stop = last(stops) as Stop;
 
@@ -110,7 +102,7 @@ export const TrainInfo = (props: any) => {
           />
         </Tab>
         <Tab title={strings.trainDetails}>
-          <TrainDetails totalKm={totalKm} />
+          <TrainDetails stops={stops} />
         </Tab>
       </TabView>
     </Layout>

@@ -1,3 +1,5 @@
+import {Stop} from '../../../../../types';
+
 export interface PropsTrainDetails {
-  totalKm: number;
+  stops: Stop[];
 }
