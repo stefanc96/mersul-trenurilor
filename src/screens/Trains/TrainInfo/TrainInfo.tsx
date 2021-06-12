@@ -79,14 +79,14 @@ export const TrainInfo = (props: any) => {
           });
         }}>
         {stationCoordinates.map((station, index) => (
-          <>
-            <Marker key={index} coordinate={station as LatLng} />
+          <React.Fragment key={index}>
+            <Marker coordinate={station as LatLng} />
             <Polyline
               coordinates={stationCoordinates as LatLng[]}
               strokeColor={trainColor as string}
               strokeWidth={3}
             />
-          </>
+          </React.Fragment>
         ))}
       </MapView>
       <TabView
@@ -102,7 +102,11 @@ export const TrainInfo = (props: any) => {
           />
         </Tab>
         <Tab title={strings.trainDetails}>
-          <TrainDetails stops={stops} />
+          <TrainDetails
+            train={train}
+            originStation={originStation}
+            destinationStation={destinationStation}
+          />
         </Tab>
       </TabView>
     </Layout>

@@ -1,5 +1,7 @@
-import {Stop} from '../../../../../types';
+import {Stop, Train} from '../../../../../types';
 
 export interface PropsTrainDetails {
-  stops: Stop[];
+  train: Train;
+  originStation: Stop;
+  destinationStation: Stop;
 }

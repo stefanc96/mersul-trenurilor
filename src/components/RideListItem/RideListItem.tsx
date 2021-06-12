@@ -33,7 +33,7 @@ export const RideListItem: React.FC<RideListItemProps> = ({
       <Row style={styles.row}>
         <View style={styles.kmColumn}>
           <Text style={{color: theme['text-basic-color']}}>
-            {km.toFixed(1)}
+            {`${km.toFixed(1)}km`}
           </Text>
         </View>
         <View style={styles.rideDot}>

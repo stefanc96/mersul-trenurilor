@@ -35,6 +35,41 @@ export function getHoursAndMinutes(value: string): TrainTime {
   };
 }
 
+export function getTrainTimeDifference(
+  startTimeStamp: string,
+  endTimeStamp: string,
+): TrainTime {
+  const startTime = getHoursAndMinutes(startTimeStamp);
+  const endTime = getHoursAndMinutes(endTimeStamp);
+
+  if (endTime.hours < startTime.hours) {
+    let totalMinutes = endTime.minutes + startTime.minutes;
+    let totalHours = 23 - startTime.hours + endTime.hours;
+
+    if (totalMinutes >= 60) {
+      totalHours += 1;
+      totalMinutes -= 60;
+    }
+
+    return {
+      minutes: totalMinutes,
+      hours: totalHours,
+    };
+  }
+  let totalMinutes = endTime.minutes + startTime.minutes;
+  let totalHours = endTime.hours - startTime.hours;
+
+  if (totalMinutes >= 60) {
+    totalHours += 1;
+    totalMinutes -= 60;
+  }
+
+  return {
+    minutes: totalMinutes,
+    hours: totalHours,
+  };
+}
+
 export const getTrainStopStatus = (
   arrivingTime: string,
   leavingTime: string,
