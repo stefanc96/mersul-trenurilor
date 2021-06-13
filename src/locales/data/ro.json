@@ -30,5 +30,10 @@
   "pleaseEnable": "Activează notificări din setări",
   "timetablesData": "Date tabele",
   "shareWithFriends": "Arată prietenilor",
-  "leaveReview": "Lasă o părere"
+  "leaveReview": "Lasă o părere",
+  "firstClass": "Clasa 1",
+  "secondClass": "Clasa 2",
+  "sleepingCabin": "Cușetă",
+  "bed": "Dormit",
+  "bistro": "Bistro"
 }

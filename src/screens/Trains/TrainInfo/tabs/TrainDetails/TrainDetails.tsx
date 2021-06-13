@@ -32,6 +32,9 @@ import {AppState, TrainRide} from '../../../../../store';
 import PushNotification from 'react-native-push-notification';
 import {TRAIN_NOTIFICATION_TIMES} from './TrainDetails.const';
 import {replaceKeysInTranslation} from '../../../../../locales/locale.utils';
+import {TRAIN_SERVICES_MAP} from '../../../../../fixtures/trainServicesMap';
+import {TrainServiceItem} from '../../../../../components';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export const TrainDetails: React.FC<PropsTrainDetails> = ({
   train,
@@ -154,90 +157,101 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
 
   return (
     <Layout>
-      {availableStops.length ? (
-        <>
-          <Modal
-            visible={showModal}
-            backdropStyle={styles.backdrop}
-            onBackdropPress={onBackdropPress}>
-            <Card disabled={true} style={styles.card}>
-              {selectedStationIndex !== null ? (
-                <>
-                  <Text category={'h6'} style={styles.title}>
-                    {strings.notificationTime}
-                  </Text>
-                  <Select
-                    value={
-                      notificationTimeIndex !== null
-                        ? `${TRAIN_NOTIFICATION_TIMES?.[notificationTimeIndex]}m`
-                        : strings.time
-                    }
-                    onSelect={onSelectTime}>
-                    {getTimeItems(
-                      availableStops,
-                      originTime,
-                      destinationTime,
-                      selectedStationIndex,
-                    ).map(time => {
-                      return <SelectItem key={time} title={`${time}m`} />;
-                    })}
-                  </Select>
-                </>
-              ) : (
-                <>
-                  <Text category={'h6'} style={styles.title}>
-                    {strings.selectStation}
-                  </Text>
-                  <Select
-                    value={
-                      selectedStationIndex
-                        ? availableStops[selectedStationIndex]?.denStaOrigine
-                        : strings.station
-                    }
-                    onSelect={onSelectStation}>
-                    {availableStops.map(stop => (
-                      <SelectItem
-                        key={stop.denStaOrigine}
-                        title={stop.denStaOrigine}
-                      />
-                    ))}
-                  </Select>
-                </>
+      <ScrollView>
+        {availableStops.length ? (
+          <>
+            <Modal
+              visible={showModal}
+              backdropStyle={styles.backdrop}
+              onBackdropPress={onBackdropPress}>
+              <Card disabled={true} style={styles.card}>
+                {selectedStationIndex !== null ? (
+                  <>
+                    <Text category={'h6'} style={styles.title}>
+                      {strings.notificationTime}
+                    </Text>
+                    <Select
+                      value={
+                        notificationTimeIndex !== null
+                          ? `${TRAIN_NOTIFICATION_TIMES?.[notificationTimeIndex]}m`
+                          : strings.time
+                      }
+                      onSelect={onSelectTime}>
+                      {getTimeItems(
+                        availableStops,
+                        originTime,
+                        destinationTime,
+                        selectedStationIndex,
+                      ).map(time => {
+                        return <SelectItem key={time} title={`${time}m`} />;
+                      })}
+                    </Select>
+                  </>
+                ) : (
+                  <>
+                    <Text category={'h6'} style={styles.title}>
+                      {strings.selectStation}
+                    </Text>
+                    <Select
+                      value={
+                        selectedStationIndex
+                          ? availableStops[selectedStationIndex]?.denStaOrigine
+                          : strings.station
+                      }
+                      onSelect={onSelectStation}>
+                      {availableStops.map(stop => (
+                        <SelectItem
+                          key={stop.denStaOrigine}
+                          title={stop.denStaOrigine}
+                        />
+                      ))}
+                    </Select>
+                  </>
+                )}
+              </Card>
+            </Modal>
+            <ListItem
+              onPress={onPressNotificationCheck}
+              title={strings.notificationQuestion}
+              accessoryRight={() => (
+                <CheckBox
+                  checked={notificationTrainIndex !== -1}
+                  onPress={onPressNotificationCheck}
+                />
               )}
-            </Card>
-          </Modal>
-          <ListItem
-            onPress={onPressNotificationCheck}
-            title={strings.notificationQuestion}
-            accessoryRight={() => (
-              <CheckBox
-                checked={notificationTrainIndex !== -1}
-                onPress={onPressNotificationCheck}
-              />
-            )}
-          />
-          <Divider />
-        </>
-      ) : null}
-
-      <ListItem
-        title={`${strings.name}: ${train.info.categorieTren} ${train.info.numar}`}
-      />
-      <Divider />
-      <ListItem title={`${strings.operator}: SNCFR`} />
-      <Divider />
-      <ListItem title={`${strings.from} ${originStation.denStaOrigine}`} />
-      <Divider />
-      <ListItem
-        title={`${strings.to} ${destinationStation.denStaDestinatie}`}
-      />
-      <Divider />
-      <ListItem
-        title={`${strings.totalTime}: ${totalTime.hours}h${totalTime.minutes}m`}
-      />
-      <Divider />
-      <ListItem title={`${strings.totalKm}: ${(totalKm / 1000).toFixed(2)}`} />
-      <Divider />
+            />
+            <Divider />
+          </>
+        ) : null}
+        <ListItem
+          title={`${strings.name}: ${train.info.categorieTren} ${train.info.numar}`}
+        />
+        <Divider />
+        <ListItem title={`${strings.operator}: SNCFR`} />
+        <Divider />
+        <ListItem title={`${strings.from} ${originStation.denStaOrigine}`} />
+        <Divider />
+        <ListItem
+          title={`${strings.to} ${destinationStation.denStaDestinatie}`}
+        />
+        <Divider />
+        <ListItem
+          title={`${strings.totalTime}: ${totalTime.hours}h${totalTime.minutes}m`}
+        />
+        <Divider />
+        <ListItem
+          title={`${strings.totalKm}: ${(totalKm / 1000).toFixed(2)}`}
+        />
+        <Divider />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.trainServices}>
+          {TRAIN_SERVICES_MAP[train.info.servicii].map(trainService => (
+            <TrainServiceItem key={trainService} trainService={trainService} />
+          ))}
+        </ScrollView>
+      </ScrollView>
     </Layout>
   );
 };
@@ -253,5 +267,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     marginBottom: 20,
+  },
+  trainServices: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 5,
   },
 });

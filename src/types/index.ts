@@ -1,5 +1,11 @@
-export enum TrainClass {
-  Second = '2',
+export enum TrainService {
+  First,
+  Second,
+  Bistro,
+  SleepingCabin1,
+  SleepingCabin2,
+  SleepingCabin4,
+  SleepingCabin6,
 }
 
 export enum RouteType {
@@ -25,7 +31,7 @@ export interface TrainInfo {
   proprietar: string;
   putere: string;
   rang: string;
-  servicii: TrainClass;
+  servicii: string;
   tonaj: string;
 }
 

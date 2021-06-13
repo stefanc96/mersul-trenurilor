@@ -31,4 +31,9 @@ export interface LocalesInterface {
   timetablesData: string;
   shareWithFriends: string;
   leaveReview: string;
+  firstClass: string;
+  secondClass: string;
+  sleepingCabin: string;
+  bed: string;
+  bistro: string;
 }
