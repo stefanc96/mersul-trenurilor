@@ -144,7 +144,7 @@ export const getArriveDate = (
   destinationTime: string,
 ) => {
   const now = new Date();
-  const stopTime = getHoursAndMinutes(stop.oraS);
+  const stopTime = getHoursAndMinutes(stop.oraP);
   const isOverTheNight = originTime > destinationTime;
   now.setHours(stopTime.hours);
   now.setMinutes(stopTime.minutes);
