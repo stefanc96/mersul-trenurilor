@@ -85,7 +85,7 @@ export const Settings = () => {
       <Divider />
       <ListItem
         onPress={onPressEnableDarkMode}
-        title="Select language"
+        title={strings.selectLanguage}
         accessoryRight={() => (
           <Row>
             <TouchableWithoutFeedback onPress={() => onPressFlag('ro')}>
