@@ -13,7 +13,7 @@ import {
 } from '@ui-kitten/components';
 import {PropsTrainDetails} from './TrainDetails.interface';
 import {reduce} from 'lodash';
-import {getTrainTimeDifference} from '../../../../../utils';
+import {getArriveDate, getTrainTimeDifference} from '../../../../../utils';
 import {strings} from '../../../../../locales';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -23,11 +23,14 @@ import {
 } from '../../../../../store/reducers/settings';
 import {
   getAvailableStops,
+  getTimeItems,
   getTrainNotificationIndex,
+  getTrainNotificationTime,
 } from './TrainDetails.utils';
 import {AppState, TrainRide} from '../../../../../store';
-
-export const TRAIN_NOTIFICATION_TIMES = [5, 10, 15, 20, 25, 30];
+import PushNotification from 'react-native-push-notification';
+import {TRAIN_NOTIFICATION_TIMES} from './TrainDetails.const';
+import {replaceKeysInTranslation} from '../../../../../locales/locale.utils';
 
 export const TrainDetails: React.FC<PropsTrainDetails> = ({
   train,
@@ -72,16 +75,37 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
 
   const onSelectTime = (index: IndexPath | IndexPath[]) => {
     if (index instanceof IndexPath) {
-      setNotificationTimeIndex(index.row);
+      if (selectedStationIndex) {
+        const arriveDate = getArriveDate(
+          availableStops[selectedStationIndex],
+          originTime,
+          destinationTime,
+        );
+
+        dispatch(
+          addTrainRide({
+            train,
+            timestamp: arriveDate.toISOString(),
+          }),
+        );
+
+        PushNotification.localNotificationSchedule({
+          message: replaceKeysInTranslation(strings.trainNotificationMessage, {
+            ['DESTINATION']: availableStops[selectedStationIndex].denStaOrigine,
+            ['TIME']: TRAIN_NOTIFICATION_TIMES[index.row].toString(),
+          }),
+          date: getTrainNotificationTime(
+            arriveDate,
+            TRAIN_NOTIFICATION_TIMES[index.row],
+          ),
+          id: Number(train.info.numar),
+          allowWhileIdle: true,
+        });
+      }
+      setNotificationTimeIndex(null);
       setSelectedStationIndex(null);
     }
     setShowModal(false);
-    dispatch(
-      addTrainRide({
-        train,
-        timestamp: new Date().toISOString(),
-      }),
-    );
   };
 
   const onSelectStation = (index: IndexPath | IndexPath[]) => {
@@ -100,6 +124,9 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
     if (notificationTrainIndex === -1) {
       setShowModal(true);
     } else {
+      PushNotification.cancelLocalNotifications({
+        id: trainRides[notificationTrainIndex].train.info.numar,
+      });
       dispatch(removeTrainRide(notificationTrainIndex));
     }
   };
@@ -125,9 +152,14 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
                         : strings.time
                     }
                     onSelect={onSelectTime}>
-                    {TRAIN_NOTIFICATION_TIMES.map(time => (
-                      <SelectItem key={time} title={`${time}m`} />
-                    ))}
+                    {getTimeItems(
+                      availableStops,
+                      originTime,
+                      destinationTime,
+                      selectedStationIndex,
+                    ).map(time => {
+                      return <SelectItem key={time} title={`${time}m`} />;
+                    })}
                   </Select>
                 </>
               ) : (

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {List} from '@ui-kitten/components';
 import {Stop} from '../../../../../types';
 import {
@@ -9,27 +9,15 @@ import {RideListItem} from '../../../../../components';
 import {StyleSheet} from 'react-native';
 import {PropsTrainRoute} from './TrainRoute.interface';
 
-const TIME_TO_UPDATE = 5 * 1000;
-
 export const TrainRoute: React.FC<PropsTrainRoute> = ({
   stops,
   originTime,
   destinationTime,
   destinationTimeWithDelay,
   trainColor,
+  time,
 }) => {
-  const [time, setTime] = useState(0);
   let totalKmByStation = 0;
-
-  useEffect(() => {
-    const timeInterval = setInterval(() => {
-      setTime(prevTime => prevTime + 1);
-    }, TIME_TO_UPDATE);
-
-    return () => {
-      clearInterval(timeInterval);
-    };
-  }, []);
 
   const renderStop = ({item, index}: {item: Stop; index: number}) => {
     if (index === 0) {

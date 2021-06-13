@@ -19,9 +19,10 @@
   "operator": "Operator",
   "totalTime": "Timp total",
   "totalKm": "Total km",
-  "notificationQuestion": "Doresti sa primesti notificare cand trenul ajunge la destinatie?",
+  "notificationQuestion": "Doresti sa primesti notificare cand trenul ajunge la statia ta?",
   "selectStation": "Selecteaza statie",
   "station": "Statie...",
   "time": "Timp...",
-  "notificationTime": "Timp notificare"
+  "notificationTime": "Timp notificare",
+  "trainNotificationMessage": "Trenul va ajunge la {{DESTINATION}} in {{TIME}} minute"
 }

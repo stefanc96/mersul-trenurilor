@@ -7,4 +7,5 @@ export interface PropsTrainRoute {
   originTime: string;
   destinationTime: string;
   destinationTimeWithDelay: string;
+  time: number;
 }

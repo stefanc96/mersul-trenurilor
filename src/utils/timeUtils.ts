@@ -1,4 +1,4 @@
-import {TrainStopStatus, TrainTime} from '../types';
+import {Stop, TrainStopStatus, TrainTime} from '../types';
 
 export function convertToHoursAndMinutes(value: string) {
   const {hours, minutes} = getHoursAndMinutes(value);
@@ -138,12 +138,18 @@ function convertNumberToTimeFormat(value: number) {
   return value < 10 ? '0' + value : value;
 }
 
-export const getDayTimestamp = (timestamp: string) => {
-  const time = new Date(timestamp);
-
-  const day = time.getDay();
-  const month = time.getMonth();
-  const year = time.getFullYear();
-
-  return `${year}.${month}.${day}`;
+export const getArriveDate = (
+  stop: Stop,
+  originTime: string,
+  destinationTime: string,
+) => {
+  const now = new Date();
+  const stopTime = getHoursAndMinutes(stop.oraS);
+  const isOverTheNight = originTime > destinationTime;
+  now.setHours(stopTime.hours);
+  now.setMinutes(stopTime.minutes);
+  if (isOverTheNight) {
+    now.setDate(now.getDate() + 1);
+  }
+  return now;
 };

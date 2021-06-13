@@ -25,6 +25,7 @@ export const settingsReducer = (
       };
     case SettingsAction.AddTrainRide:
       state?.trainRides?.push?.(action.payload.trainRide);
+      console.log(action.payload.trainRide);
 
       return {
         ...state,

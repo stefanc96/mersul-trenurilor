@@ -19,9 +19,10 @@
   "operator": "Operator",
   "totalTime": "Total time",
   "totalKm": "Total km",
-  "notificationQuestion": "Would you like to be notified when tren arrives at the destination?",
+  "notificationQuestion": "Would you like to be notified when the train will arrive at your station?",
   "selectStation": "Select station",
   "station": "Station...",
   "time": "Time...",
-  "notificationTime": "Time to be notified"
+  "notificationTime": "Time to be notified",
+  "trainNotificationMessage": "Train will arrive to {{DESTINATION}} in {{TIME}} minutes"
 }

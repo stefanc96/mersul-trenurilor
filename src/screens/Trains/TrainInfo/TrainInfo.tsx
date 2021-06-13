@@ -1,4 +1,4 @@
-import React, {Ref, useRef, useState} from 'react';
+import React, {Ref, useEffect, useRef, useState} from 'react';
 import MapView, {LatLng, Marker, Polyline} from 'react-native-maps';
 import {chain, head, last} from 'lodash';
 import {appStyles} from '../../../theme';
@@ -22,6 +22,8 @@ import {
   convertToHoursAndMinutesWidthDelay,
 } from '../../../utils';
 
+const TIME_TO_UPDATE = 10 * 1000;
+
 export const TrainInfo = (props: any) => {
   const {train, trainColor}: {train: Train; trainColor: ColorValue} =
     props.route.params;
@@ -40,6 +42,17 @@ export const TrainInfo = (props: any) => {
     destinationStation.oraP,
     1,
   );
+  const [time, setTime] = useState(0);
+
+  useEffect(() => {
+    const timeInterval = setInterval(() => {
+      setTime(prevTime => prevTime + 1);
+    }, TIME_TO_UPDATE);
+
+    return () => {
+      clearInterval(timeInterval);
+    };
+  }, []);
 
   const onPressBack = () => {
     const {navigation} = props;
@@ -105,6 +118,7 @@ export const TrainInfo = (props: any) => {
         onSelect={index => setSelectedTab(index)}>
         <Tab title={strings.trainRoute}>
           <TrainRoute
+            time={time}
             trainColor={trainColor}
             originTime={originTime}
             destinationTimeWithDelay={destinationTimeWithDelay}

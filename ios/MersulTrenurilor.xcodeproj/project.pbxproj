@@ -12,8 +12,6 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1800415326638B7F00476C8F /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1800415226638B7F00476C8F /* File.swift */; };
-		18E4BD392673CD5300AA7DC7 /* appstore.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E4BD382673CD5300AA7DC7 /* appstore.png */; };
-		18E4BD3B2673CDD000AA7DC7 /* ic_launcher.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E4BD3A2673CDD000AA7DC7 /* ic_launcher.png */; };
 		2540620AA3A5E29B9500FA5D /* libPods-MersulTrenurilor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9C7B0A975E4E6E8A5AEBFEE /* libPods-MersulTrenurilor.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		938F9F94363D86610B769389 /* libPods-MersulTrenurilor-MersulTrenurilorTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7C6BA622B925D3F5B396DB8 /* libPods-MersulTrenurilor-MersulTrenurilorTests.a */; };
@@ -42,8 +40,6 @@
 		1800415126638B7E00476C8F /* MersulTrenurilor-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MersulTrenurilor-Bridging-Header.h"; sourceTree = "<group>"; };
 		1800415226638B7F00476C8F /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		18C58EDB2674EE6C00B89020 /* MersulTrenurilor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MersulTrenurilor.entitlements; path = MersulTrenurilor/MersulTrenurilor.entitlements; sourceTree = "<group>"; };
-		18E4BD382673CD5300AA7DC7 /* appstore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appstore.png; sourceTree = "<group>"; };
-		18E4BD3A2673CDD000AA7DC7 /* ic_launcher.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_launcher.png; sourceTree = "<group>"; };
 		1D74A0BDDB60979CA4637980 /* Pods-MersulTrenurilor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MersulTrenurilor.debug.xcconfig"; path = "Target Support Files/Pods-MersulTrenurilor/Pods-MersulTrenurilor.debug.xcconfig"; sourceTree = "<group>"; };
 		3044CC59AB779E4527BE8543 /* Pods-MersulTrenurilor-MersulTrenurilorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MersulTrenurilor-MersulTrenurilorTests.release.xcconfig"; path = "Target Support Files/Pods-MersulTrenurilor-MersulTrenurilorTests/Pods-MersulTrenurilor-MersulTrenurilorTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MersulTrenurilor/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -163,8 +159,6 @@
 		C36B159CBC154D2681A6A457 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				18E4BD3A2673CDD000AA7DC7 /* ic_launcher.png */,
-				18E4BD382673CD5300AA7DC7 /* appstore.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -264,9 +258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				18E4BD392673CD5300AA7DC7 /* appstore.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				18E4BD3B2673CDD000AA7DC7 /* ic_launcher.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

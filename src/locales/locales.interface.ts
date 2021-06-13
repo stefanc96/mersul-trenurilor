@@ -24,4 +24,5 @@ export interface LocalesInterface {
   station: string;
   time: string;
   notificationTime: string;
+  trainNotificationMessage: string;
 }
