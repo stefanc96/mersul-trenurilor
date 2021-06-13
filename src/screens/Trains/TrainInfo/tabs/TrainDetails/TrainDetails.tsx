@@ -11,11 +11,11 @@ import {
   SelectItem,
   Text,
 } from '@ui-kitten/components';
+import {StyleSheet} from 'react-native';
 import {PropsTrainDetails} from './TrainDetails.interface';
 import {reduce} from 'lodash';
 import {getArriveDate, getTrainTimeDifference} from '../../../../../utils';
 import {strings} from '../../../../../locales';
-import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   addTrainRide,
@@ -26,6 +26,7 @@ import {
   getTimeItems,
   getTrainNotificationIndex,
   getTrainNotificationTime,
+  handlePermissionReject,
 } from './TrainDetails.utils';
 import {AppState, TrainRide} from '../../../../../store';
 import PushNotification from 'react-native-push-notification';
@@ -122,7 +123,7 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
     setShowModal(false);
   };
 
-  const onPressNotificationCheck = () => {
+  const onPermissionGranted = () => {
     if (notificationTrainIndex === -1) {
       setShowModal(true);
     } else {
@@ -131,6 +132,24 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
       });
       dispatch(removeTrainRide(notificationTrainIndex));
     }
+  };
+
+  const onPressNotificationCheck = () => {
+    PushNotification.checkPermissions(permissions => {
+      if (permissions.badge || permissions.alert) {
+        onPermissionGranted();
+      } else {
+        PushNotification.requestPermissions(['alert', 'badge']).then(
+          permissionsState => {
+            if (permissionsState.badge || permissionsState.alert) {
+              onPermissionGranted();
+            } else {
+              handlePermissionReject();
+            }
+          },
+        );
+      }
+    });
   };
 
   return (

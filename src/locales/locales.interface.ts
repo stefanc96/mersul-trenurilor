@@ -25,4 +25,7 @@ export interface LocalesInterface {
   time: string;
   notificationTime: string;
   trainNotificationMessage: string;
+  cancel: string;
+  openSettings: string;
+  pleaseEnable: string;
 }

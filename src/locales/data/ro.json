@@ -24,5 +24,8 @@
   "station": "Statie...",
   "time": "Timp...",
   "notificationTime": "Timp notificare",
-  "trainNotificationMessage": "Trenul va ajunge la {{DESTINATION}} in {{TIME}} minute"
+  "trainNotificationMessage": "Trenul va ajunge la {{DESTINATION}} in {{TIME}} minute",
+  "cancel": "Anulare",
+  "openSettings": "Deschide setari",
+  "pleaseEnable": "Activeaza notificari din setari"
 }

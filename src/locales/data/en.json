@@ -24,5 +24,8 @@
   "station": "Station...",
   "time": "Time...",
   "notificationTime": "Time to be notified",
-  "trainNotificationMessage": "Train will arrive to {{DESTINATION}} in {{TIME}} minutes"
+  "trainNotificationMessage": "Train will arrive to {{DESTINATION}} in {{TIME}} minutes",
+  "cancel": "Cancel",
+  "openSettings": "Open settings",
+  "pleaseEnable": "Please enable notifications in settings"
 }

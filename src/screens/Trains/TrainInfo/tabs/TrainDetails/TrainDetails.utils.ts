@@ -3,10 +3,12 @@ import {
   getArriveDate,
   getTrainStopStatus,
 } from '../../../../../utils';
-import {chain} from 'lodash';
+import {chain, noop} from 'lodash';
 import {Stop, Train, TrainStopStatus} from '../../../../../types';
 import {TrainRide} from '../../../../../store';
 import {TRAIN_NOTIFICATION_TIMES} from './TrainDetails.const';
+import {Alert, Linking} from 'react-native';
+import {strings} from '../../../../../locales';
 
 export const getAvailableStops = (
   stops: Stop[],
@@ -97,4 +99,17 @@ export const getTimeItems = (
       );
     })
     .value();
+};
+
+export const handlePermissionReject = () => {
+  Alert.alert(strings.openSettings, strings.pleaseEnable, [
+    {
+      text: strings.settings,
+      onPress: () => Linking.openSettings(),
+    },
+    {
+      text: strings.cancel,
+      onPress: noop,
+    },
+  ]);
 };
