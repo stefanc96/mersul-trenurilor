@@ -4,15 +4,26 @@ import {
   Layout,
   ListItem,
   Toggle,
+  Text,
   useTheme,
+  Icon,
 } from '@ui-kitten/components';
 import {MEDIUM_SIZE} from '../../theme';
-import {Image, TouchableWithoutFeedback} from 'react-native';
+import {Image, TouchableWithoutFeedback, Linking, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppState} from '../../store';
 import {setLocaleId, setThemeId} from '../../store/reducers/settings';
 import {Row} from '../../components';
 import {strings} from '../../locales';
+import {noop} from 'lodash';
+import InAppReview from 'react-native-in-app-review';
+
+export const ArrowIcon = (props: any) => (
+  <Icon {...props} name="arrow-ios-forward-outline" />
+);
+
+const TIMETABLE_DATA_URL =
+  'https://data.gov.ro/dataset/mers-tren-sntfc-cfr-calatori-s-a';
 
 export const Settings = () => {
   const settings = useSelector((state: AppState) => state.settings);
@@ -35,12 +46,32 @@ export const Settings = () => {
     dispatch(setLocaleId(localeId));
   };
 
+  const onPressLeaveReview = () => {
+    if (InAppReview.isAvailable()) {
+      InAppReview.RequestInAppReview().catch(noop);
+    }
+  };
+
+  const onPressShareWithFriends = () => {};
+
+  const onPressTimetablesData = () => {
+    Linking.openURL(TIMETABLE_DATA_URL).catch(noop);
+  };
+
   const selectedFlagStyle = {
     borderColor: theme['text-basic-color'],
   };
 
   return (
     <Layout style={styles.container}>
+      <View style={styles.header}>
+        <Image
+          source={require('../../../assets/images/app_icon.png')}
+          style={styles.image}
+        />
+        <Text category={'h6'}>Mersul trenurilor</Text>
+        <Text category={'s1'}>@2021 Stefan Chelaru</Text>
+      </View>
       <ListItem
         onPress={onPressEnableDarkMode}
         title={strings.enableDarkMode}
@@ -79,6 +110,24 @@ export const Settings = () => {
         )}
       />
       <Divider />
+      <ListItem
+        onPress={onPressLeaveReview}
+        title={'Leave a review'}
+        accessoryRight={ArrowIcon}
+      />
+      <Divider />
+      <ListItem
+        onPress={onPressShareWithFriends}
+        title={'Share with friends'}
+        accessoryRight={ArrowIcon}
+      />
+      <Divider />
+      <ListItem
+        onPress={onPressTimetablesData}
+        title={'Timetables data'}
+        accessoryRight={ArrowIcon}
+      />
+      <Divider />
     </Layout>
   );
 };
@@ -95,5 +144,12 @@ const styles = {
     width: 40,
     height: 40,
     marginLeft: 10,
+  },
+  image: {
+    width: 150,
+    height: 150,
+  },
+  header: {
+    alignItems: 'center',
   },
 };
