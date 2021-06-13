@@ -271,6 +271,7 @@ const styles = StyleSheet.create({
   trainServices: {
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
     paddingHorizontal: 5,
   },
 });
