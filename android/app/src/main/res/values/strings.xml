@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MersulTrenurilor</string>
+    <string name="default_notification_channel_id">mersul-trenurilor</string>
 </resources>

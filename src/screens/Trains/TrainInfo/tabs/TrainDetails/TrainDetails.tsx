@@ -82,10 +82,15 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
           destinationTime,
         );
 
+        const notificationDate = getTrainNotificationTime(
+          arriveDate,
+          TRAIN_NOTIFICATION_TIMES[index.row],
+        );
+
         dispatch(
           addTrainRide({
             train,
-            timestamp: arriveDate.toISOString(),
+            timestamp: notificationDate.toISOString(),
           }),
         );
 
@@ -94,10 +99,7 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
             ['DESTINATION']: availableStops[selectedStationIndex].denStaOrigine,
             ['TIME']: TRAIN_NOTIFICATION_TIMES[index.row].toString(),
           }),
-          date: getTrainNotificationTime(
-            arriveDate,
-            TRAIN_NOTIFICATION_TIMES[index.row],
-          ),
+          date: notificationDate,
           id: Number(train.info.numar),
           allowWhileIdle: true,
         });
