@@ -9,7 +9,13 @@ import {
   Icon,
 } from '@ui-kitten/components';
 import {MEDIUM_SIZE} from '../../theme';
-import {Image, TouchableWithoutFeedback, Linking, View} from 'react-native';
+import {
+  Image,
+  TouchableWithoutFeedback,
+  Linking,
+  View,
+  useColorScheme,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppState} from '../../store';
 import {setLocaleId, setThemeId} from '../../store/reducers/settings';
@@ -29,8 +35,9 @@ export const Settings = () => {
   const settings = useSelector((state: AppState) => state.settings);
   const theme = useTheme();
   const dispatch = useDispatch();
+  const colorScheme = useColorScheme();
   const [hasDarkModeEnabled, setHasDarkModeEnabled] = useState(
-    settings?.themeId === 'dark',
+    (settings?.themeId || colorScheme) === 'dark',
   );
 
   const onPressEnableDarkMode = () => {

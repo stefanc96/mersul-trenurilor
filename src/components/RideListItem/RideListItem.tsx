@@ -32,7 +32,7 @@ export const RideListItem: React.FC<RideListItemProps> = ({
       )}
       <Row style={styles.row}>
         <View style={styles.kmColumn}>
-          <Text style={{color: theme['text-basic-color']}}>
+          <Text style={{color: theme['text-basic-color']}} numberOfLines={1}>
             {`${km.toFixed(1)}km`}
           </Text>
         </View>
@@ -40,7 +40,7 @@ export const RideListItem: React.FC<RideListItemProps> = ({
           <RideDot trainColor={trainColor} rideStopStatus={rideStopStatus} />
         </View>
         <View style={styles.arrivalTimeColumn}>
-          <Text style={{color: theme['text-basic-color']}}>
+          <Text style={{color: theme['text-basic-color']}} numberOfLines={1}>
             {!isFirst && arrivalTime}
           </Text>
         </View>
@@ -54,7 +54,9 @@ export const RideListItem: React.FC<RideListItemProps> = ({
           </Text>
         </View>
         <View style={styles.leavingTimeColumn}>
-          <Text style={{color: theme['text-basic-color']}}>{leavingTime}</Text>
+          <Text style={{color: theme['text-basic-color']}} numberOfLines={1}>
+            {leavingTime}
+          </Text>
         </View>
       </Row>
     </View>
@@ -64,8 +66,8 @@ export const RideListItem: React.FC<RideListItemProps> = ({
 const styles = StyleSheet.create({
   stationSeparator: {
     width: 10,
-    marginLeft: '15%',
-    marginRight: '75%',
+    marginLeft: '18%',
+    marginRight: '72%',
     height: 40,
     alignSelf: 'center',
   },
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   kmColumn: {
-    width: '15%',
+    width: '18%',
     alignItems: 'center',
   },
   rideDot: {
@@ -81,18 +83,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   arrivalTimeColumn: {
-    width: '12%',
+    width: '11%',
     alignItems: 'center',
   },
   stationNameColumn: {
-    width: '46%',
+    width: '45%',
     alignItems: 'center',
   },
   stationNameText: {
     textAlign: 'center',
   },
   leavingTimeColumn: {
-    width: '12%',
+    width: '11%',
     alignItems: 'center',
   },
 });
