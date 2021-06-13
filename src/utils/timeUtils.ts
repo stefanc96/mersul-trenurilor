@@ -70,6 +70,16 @@ export function getTrainTimeDifference(
   };
 }
 
+export const getNowTrainTime = (): string => {
+  const now = new Date();
+
+  return (
+    convertNumberToTimeFormat(now.getHours()) +
+    ':' +
+    convertNumberToTimeFormat(now.getMinutes())
+  );
+};
+
 export const getTrainStopStatus = (
   arrivingTime: string,
   leavingTime: string,
@@ -78,11 +88,7 @@ export const getTrainStopStatus = (
   destinationTimeWithDelay: string,
 ): TrainStopStatus => {
   const isOverTheNight = originTime > destinationTime;
-  const now = new Date();
-  const nowTrainTime =
-    convertNumberToTimeFormat(now.getHours()) +
-    ':' +
-    convertNumberToTimeFormat(now.getMinutes());
+  const nowTrainTime = getNowTrainTime();
 
   if (
     isOverTheNight &&
