@@ -115,6 +115,7 @@ export const TrainInfo = (props: any) => {
       <TabView
         selectedIndex={selectedTab}
         style={styles.tabView}
+        swipeEnabled={false}
         onSelect={index => setSelectedTab(index)}>
         <Tab title={strings.trainRoute}>
           <TrainRoute
