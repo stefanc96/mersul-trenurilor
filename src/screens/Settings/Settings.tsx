@@ -112,19 +112,19 @@ export const Settings = () => {
       <Divider />
       <ListItem
         onPress={onPressLeaveReview}
-        title={'Leave a review'}
+        title={strings.leaveReview}
         accessoryRight={ArrowIcon}
       />
       <Divider />
       <ListItem
         onPress={onPressShareWithFriends}
-        title={'Share with friends'}
+        title={strings.shareWithFriends}
         accessoryRight={ArrowIcon}
       />
       <Divider />
       <ListItem
         onPress={onPressTimetablesData}
-        title={'Timetables data'}
+        title={strings.timetablesData}
         accessoryRight={ArrowIcon}
       />
       <Divider />

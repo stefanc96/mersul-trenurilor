@@ -19,13 +19,16 @@
   "operator": "Operator",
   "totalTime": "Timp total",
   "totalKm": "Total km",
-  "notificationQuestion": "Doresti sa primesti notificare cand trenul ajunge la statia ta?",
-  "selectStation": "Selecteaza statie",
-  "station": "Statie...",
+  "notificationQuestion": "Dorești să primești notificare când trenul ajunge la stația ta?",
+  "selectStation": "Selectează stație",
+  "station": "Stație...",
   "time": "Timp...",
   "notificationTime": "Timp notificare",
-  "trainNotificationMessage": "Trenul va ajunge la {{DESTINATION}} in {{TIME}} minute",
+  "trainNotificationMessage": "Trenul va ajunge la {{DESTINATION}} în {{TIME}} minute",
   "cancel": "Anulare",
-  "openSettings": "Deschide setari",
-  "pleaseEnable": "Activeaza notificari din setari"
+  "openSettings": "Deschide setări",
+  "pleaseEnable": "Activează notificări din setări",
+  "timetablesData": "Date tabele",
+  "shareWithFriends": "Arată prietenilor",
+  "leaveReview": "Lasă o părere"
 }

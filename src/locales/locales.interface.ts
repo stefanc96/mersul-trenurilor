@@ -28,4 +28,7 @@ export interface LocalesInterface {
   cancel: string;
   openSettings: string;
   pleaseEnable: string;
+  timetablesData: string;
+  shareWithFriends: string;
+  leaveReview: string;
 }

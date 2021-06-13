@@ -27,5 +27,8 @@
   "trainNotificationMessage": "Train will arrive to {{DESTINATION}} in {{TIME}} minutes",
   "cancel": "Cancel",
   "openSettings": "Open settings",
-  "pleaseEnable": "Please enable notifications in settings"
+  "pleaseEnable": "Please enable notifications in settings",
+  "timetablesData": "Timetables data",
+  "shareWithFriends": "Share with friends",
+  "leaveReview": "Leave a review"
 }
