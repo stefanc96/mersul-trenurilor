@@ -22,10 +22,15 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="train_white_192x192.png" translatesAutoresizingMaskIntoConstraints="NO" id="MGh-yt-74b">
+                                <rect key="frame" x="57" y="82" width="260" height="222"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="MGh-yt-74b" firstAttribute="centerX" secondItem="GJd-Yh-RWb" secondAttribute="centerX" id="0eS-9A-fnG"/>
+                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="top" secondItem="MGh-yt-74b" secondAttribute="bottom" constant="68" id="Mmf-Ly-V6k"/>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="GJd-Yh-RWb" secondAttribute="centerX" id="Q3B-4B-g5h"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="fGg-hZ-54b"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="bottom" multiplier="1/3" constant="1" id="moa-c2-u7t"/>
@@ -38,4 +43,7 @@
             <point key="canvasLocation" x="52.173913043478265" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="train_white_192x192.png" width="192" height="192"/>
+    </resources>
 </document>

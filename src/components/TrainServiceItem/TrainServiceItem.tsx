@@ -45,7 +45,7 @@ export const TrainServiceItem: React.FC<PropsTrainServiceItem> = ({
               },
               styles.firstClassContainer,
             ]}>
-            <Text category={'h5'}>
+            <Text category={'h5'} style={{color: 'white'}}>
               {trainService === TrainService.First ? 1 : 2}
             </Text>
           </View>
