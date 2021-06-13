@@ -12,15 +12,20 @@ import {
   Text,
 } from '@ui-kitten/components';
 import {PropsTrainDetails} from './TrainDetails.interface';
-import {chain, reduce} from 'lodash';
-import {
-  convertToHoursAndMinutes,
-  getTrainStopStatus,
-  getTrainTimeDifference,
-} from '../../../../../utils';
+import {reduce} from 'lodash';
+import {getTrainTimeDifference} from '../../../../../utils';
 import {strings} from '../../../../../locales';
 import {StyleSheet} from 'react-native';
-import {TrainStopStatus} from '../../../../../types';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  addTrainRide,
+  removeTrainRide,
+} from '../../../../../store/reducers/settings';
+import {
+  getAvailableStops,
+  getTrainNotificationIndex,
+} from './TrainDetails.utils';
+import {AppState, TrainRide} from '../../../../../store';
 
 export const TRAIN_NOTIFICATION_TIMES = [5, 10, 15, 20, 25, 30];
 
@@ -33,9 +38,17 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
   destinationTimeWithDelay,
 }) => {
   const {stops} = train.route;
+  const dispatch = useDispatch();
+  const trainRides: Array<TrainRide> = useSelector(
+    (state: AppState) => state.settings.trainRides,
+  );
   const [showModal, setShowModal] = useState(false);
-  const [notificationTimeIndex, setNotificationTime] = useState(null);
-  const [selectedStationIndex, setSelectedStationIndex] = useState(null);
+  const [notificationTimeIndex, setNotificationTimeIndex] = useState<
+    number | null
+  >(null);
+  const [selectedStationIndex, setSelectedStationIndex] = useState<
+    number | null
+  >(null);
   const totalTime = getTrainTimeDifference(
     originStation.oraS,
     destinationStation.oraS,
@@ -48,41 +61,47 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
     0,
   );
 
-  const availableStops = chain(stops)
-    .filter((stop, index) => {
-      const previousStop = stops[index - 1];
-      const arrivalTime = convertToHoursAndMinutes(
-        previousStop?.oraS || stop.oraS,
-      );
-      const leavingTime = convertToHoursAndMinutes(stop.oraP);
-      const rideStopStatus = getTrainStopStatus(
-        arrivalTime,
-        leavingTime,
-        originTime,
-        destinationTime,
-        destinationTimeWithDelay,
-      );
-      return rideStopStatus === TrainStopStatus.NeedsToArrive;
-    })
-    .value();
+  const notificationTrainIndex = getTrainNotificationIndex(trainRides, train);
 
-  const onSelectTime = (index: IndexPath) => {
-    setNotificationTime(index?.row);
+  const availableStops = getAvailableStops(
+    stops,
+    originTime,
+    destinationTime,
+    destinationTimeWithDelay,
+  );
+
+  const onSelectTime = (index: IndexPath | IndexPath[]) => {
+    if (index instanceof IndexPath) {
+      setNotificationTimeIndex(index.row);
+      setSelectedStationIndex(null);
+    }
     setShowModal(false);
+    dispatch(
+      addTrainRide({
+        train,
+        timestamp: new Date().toISOString(),
+      }),
+    );
   };
 
-  const onSelectStation = (index: IndexPath) => {
-    setSelectedStationIndex(index?.row);
+  const onSelectStation = (index: IndexPath | IndexPath[]) => {
+    if (index instanceof IndexPath) {
+      setSelectedStationIndex(index.row);
+    }
   };
 
   const onBackdropPress = () => {
-    setNotificationTime(null);
+    setNotificationTimeIndex(null);
     setSelectedStationIndex(null);
     setShowModal(false);
   };
 
   const onPressNotificationCheck = () => {
-    setShowModal(true);
+    if (notificationTrainIndex === -1) {
+      setShowModal(true);
+    } else {
+      dispatch(removeTrainRide(notificationTrainIndex));
+    }
   };
 
   return (
@@ -93,15 +112,15 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
             visible={showModal}
             backdropStyle={styles.backdrop}
             onBackdropPress={onBackdropPress}>
-            <Card disabled={true} style={{}}>
-              {selectedStationIndex ? (
+            <Card disabled={true} style={styles.card}>
+              {selectedStationIndex !== null ? (
                 <>
                   <Text category={'h6'} style={styles.title}>
                     {strings.notificationTime}
                   </Text>
                   <Select
                     value={
-                      notificationTimeIndex
+                      notificationTimeIndex !== null
                         ? `${TRAIN_NOTIFICATION_TIMES?.[notificationTimeIndex]}m`
                         : strings.time
                     }
@@ -137,7 +156,12 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
           <ListItem
             onPress={onPressNotificationCheck}
             title={strings.notificationQuestion}
-            accessoryRight={() => <CheckBox />}
+            accessoryRight={() => (
+              <CheckBox
+                checked={notificationTrainIndex !== -1}
+                onPress={onPressNotificationCheck}
+              />
+            )}
           />
           <Divider />
         </>
@@ -149,10 +173,10 @@ export const TrainDetails: React.FC<PropsTrainDetails> = ({
       <Divider />
       <ListItem title={`${strings.operator}: SNCFR`} />
       <Divider />
-      <ListItem title={`${strings.from}: ${originStation.denStaOrigine}`} />
+      <ListItem title={`${strings.from} ${originStation.denStaOrigine}`} />
       <Divider />
       <ListItem
-        title={`${strings.to}: ${destinationStation.denStaDestinatie}`}
+        title={`${strings.to} ${destinationStation.denStaDestinatie}`}
       />
       <Divider />
       <ListItem

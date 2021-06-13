@@ -137,3 +137,13 @@ export const getNightTrainStopStatus = (
 function convertNumberToTimeFormat(value: number) {
   return value < 10 ? '0' + value : value;
 }
+
+export const getDayTimestamp = (timestamp: string) => {
+  const time = new Date(timestamp);
+
+  const day = time.getDay();
+  const month = time.getMonth();
+  const year = time.getFullYear();
+
+  return `${year}.${month}.${day}`;
+};
