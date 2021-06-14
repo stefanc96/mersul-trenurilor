@@ -90,10 +90,7 @@ export const getTrainStopStatus = (
   const isOverTheNight = originTime > destinationTime;
   const nowTrainTime = getNowTrainTime();
 
-  if (
-    isOverTheNight &&
-    (nowTrainTime > originTime || nowTrainTime < destinationTimeWithDelay)
-  ) {
+  if (isOverTheNight) {
     return getNightTrainStopStatus(
       nowTrainTime,
       arrivingTime,
@@ -128,6 +125,9 @@ export const getNightTrainStopStatus = (
   originTime: string,
   destinationTime: string,
 ): TrainStopStatus => {
+  if (nowTrainTime < originTime && nowTrainTime > destinationTime) {
+    return TrainStopStatus.HasPassed;
+  }
   if (arrivingTime >= originTime && arrivingTime <= '24:00') {
     if (nowTrainTime < originTime) {
       return TrainStopStatus.HasPassed;
