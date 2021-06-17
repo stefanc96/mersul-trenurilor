@@ -6,6 +6,7 @@ import {Station, Stop, Train} from '../../../types';
 import {useSelector} from 'react-redux';
 import {AppState} from '../../../store';
 import {
+  Icon,
   Layout,
   Tab,
   TabView,
@@ -21,8 +22,17 @@ import {
   convertToHoursAndMinutes,
   convertToHoursAndMinutesWidthDelay,
 } from '../../../utils';
+import {getTrainCurrentCoordinates} from './TrainInfo.utils';
+import {IconPack} from '../../../theme/icons/Icon.interface';
 
-const TIME_TO_UPDATE = 10 * 1000;
+const TIME_TO_UPDATE = 5 * 1000;
+export const MarkerIcon = (props: any) => (
+  <Icon {...props} pack={IconPack.MaterialCommunity} name="map-marker" />
+);
+
+export const TrainIcon = (props: any) => (
+  <Icon {...props} pack={IconPack.MaterialCommunity} name="bus-marker" />
+);
 
 export const TrainInfo = (props: any) => {
   const {train, trainColor}: {train: Train; trainColor: ColorValue} =
@@ -64,21 +74,41 @@ export const TrainInfo = (props: any) => {
   const renderBackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={onPressBack} />
   );
+  let trainCoordinates;
 
   const stationCoordinates = chain(train.route.stops)
-    .map(stop => {
-      const coordinates = stations.find(
+    .map((stop, index) => {
+      const nextStation = stations.find(
         station => station.cod === stop.codStaOrigine,
-      )?.coordinates;
-      if (coordinates) {
+      );
+      if (nextStation) {
+        const lastStation = stations.find(
+          station =>
+            station.cod === train.route.stops[index - 1]?.codStaOrigine,
+        );
+
+        const newTrainCoordinates = getTrainCurrentCoordinates(
+          stop,
+          lastStation as Station,
+          nextStation as Station,
+          originTime,
+          destinationTimeWithDelay,
+        );
+        if (newTrainCoordinates) {
+          trainCoordinates = newTrainCoordinates;
+        }
         return {
-          latitude: Number(coordinates?.lat),
-          longitude: Number(coordinates?.lon),
+          latitude: Number(nextStation?.coordinates.lat),
+          longitude: Number(nextStation?.coordinates.lon),
         };
       }
     })
     .without(undefined)
     .value();
+
+  if (!trainCoordinates) {
+    trainCoordinates = last(stationCoordinates);
+  }
 
   return (
     <Layout style={appStyles.container}>
@@ -101,9 +131,23 @@ export const TrainInfo = (props: any) => {
             },
           });
         }}>
+        {trainCoordinates && (
+          <Marker coordinate={trainCoordinates as LatLng}>
+            <TrainIcon style={styles.trainMarker} />
+          </Marker>
+        )}
         {stationCoordinates.map((station, index) => (
           <React.Fragment key={index}>
-            <Marker coordinate={station as LatLng} />
+            <Marker coordinate={station as LatLng} flat>
+              <MarkerIcon
+                style={[
+                  {
+                    color: trainColor,
+                  },
+                  styles.stationIcon,
+                ]}
+              />
+            </Marker>
             <Polyline
               coordinates={stationCoordinates as LatLng[]}
               strokeColor={trainColor as string}
@@ -149,5 +193,14 @@ const styles = StyleSheet.create({
   },
   tabView: {
     flex: 1,
+  },
+  trainMarker: {
+    height: 50,
+    bottom: 30,
+    color: 'black',
+  },
+  stationIcon: {
+    height: 20,
+    bottom: 10,
   },
 });

@@ -80,6 +80,12 @@ export const getNowTrainTime = (): string => {
   );
 };
 
+export const getNowTrainTimeInSeconds = (): number => {
+  const now = new Date();
+
+  return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+};
+
 export const getTrainStopStatus = (
   arrivingTime: string,
   leavingTime: string,
