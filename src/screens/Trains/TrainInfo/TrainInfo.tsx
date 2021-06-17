@@ -13,7 +13,12 @@ import {
   TopNavigation,
   TopNavigationAction,
 } from '@ui-kitten/components';
-import {ColorValue, StyleSheet, useWindowDimensions} from 'react-native';
+import {
+  ColorValue,
+  Platform,
+  StyleSheet,
+  useWindowDimensions,
+} from 'react-native';
 import {BackIcon} from '../../../components';
 import {StackActions} from '@react-navigation/native';
 import {TrainDetails, TrainRoute} from './tabs';
@@ -120,6 +125,12 @@ export const TrainInfo = (props: any) => {
       />
       <MapView
         ref={mapView}
+        initialRegion={{
+          latitude: 45.943161,
+          longitude: 24.96676,
+          latitudeDelta: 2,
+          longitudeDelta: 0.0421,
+        }}
         style={styles.mapView}
         onMapReady={() => {
           mapView?.current?.fitToCoordinates?.(stationCoordinates as LatLng[], {
@@ -196,11 +207,11 @@ const styles = StyleSheet.create({
   },
   trainMarker: {
     height: 50,
-    bottom: 30,
+    bottom: Platform.OS === 'android' ? 0 : 30,
     color: 'black',
   },
   stationIcon: {
     height: 20,
-    bottom: 10,
+    bottom: Platform.OS === 'android' ? 0 : 10,
   },
 });

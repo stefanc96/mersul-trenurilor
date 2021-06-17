@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Ref, useRef} from 'react';
 import {appStyles} from '../../../theme';
 import {
   Divider,
@@ -11,23 +11,35 @@ import {
 } from '@ui-kitten/components';
 import {StackActions} from '@react-navigation/native';
 import {ScreenEnum, Station, Train} from '../../../types';
-import MapView, {Marker} from 'react-native-maps';
-import {ColorValue, StyleSheet} from 'react-native';
+import MapView, {LatLng, Marker} from 'react-native-maps';
+import {
+  ColorValue,
+  Platform,
+  StyleSheet,
+  useWindowDimensions,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import {AppState} from '../../../store';
 import {find, chain} from 'lodash';
 import {strings} from '../../../locales';
 import {TrainListItem} from '../../Trains/components';
+import {IconPack} from '../../../theme/icons/Icon.interface';
+
+const StationIcon = (props: any) => (
+  <Icon {...props} pack={IconPack.MaterialCommunity} name="map-marker" />
+);
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />;
 
 export const StationInfo = (props: any) => {
   const {navigation} = props;
+  const mapView: Ref<MapView> = useRef(null);
   const {station, trainIds}: {station: Station; trainIds: string[]} =
     props.route.params;
   const initialTrains = useSelector(
     (state: AppState) => state.timetable.trains,
   );
+  const {width, height} = useWindowDimensions();
 
   const onPressBack = () => {
     const popAction = StackActions.pop(1);
@@ -59,6 +71,11 @@ export const StationInfo = (props: any) => {
   };
   const trainKeyExtractor = (item: Train, index: number) => `${index}`;
 
+  const stationCoordinates = {
+    latitude: Number(station.coordinates.lat),
+    longitude: Number(station.coordinates.lon),
+  };
+
   return (
     <Layout style={appStyles.container}>
       <TopNavigation
@@ -68,22 +85,35 @@ export const StationInfo = (props: any) => {
       />
       <MapView
         style={styles.mapView}
+        ref={mapView}
+        onMapReady={() => {
+          mapView?.current?.fitToCoordinates?.(
+            [stationCoordinates] as LatLng[],
+            {
+              edgePadding: {
+                right: width / 20,
+                bottom: height / 20,
+                left: width / 20,
+                top: height / 20,
+              },
+            },
+          );
+        }}
+        region={{
+          ...stationCoordinates,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.0421,
+        }}
         initialCamera={{
-          altitude: 1000,
+          altitude: 10,
           heading: 1,
           pitch: 1,
           zoom: 1,
-          center: {
-            latitude: Number(station.coordinates.lat),
-            longitude: Number(station.coordinates.lon),
-          },
+          center: stationCoordinates,
         }}>
-        <Marker
-          coordinate={{
-            latitude: Number(station.coordinates.lat),
-            longitude: Number(station.coordinates.lon),
-          }}
-        />
+        <Marker coordinate={stationCoordinates}>
+          <StationIcon style={styles.stationIcon} />
+        </Marker>
       </MapView>
       <List
         bounces={false}
@@ -106,5 +136,10 @@ const styles = StyleSheet.create({
   },
   emptyLabel: {
     textAlign: 'center',
+  },
+  stationIcon: {
+    height: 30,
+    color: 'black',
+    bottom: Platform.OS === 'android' ? 0 : 10,
   },
 });
