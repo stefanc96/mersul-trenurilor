@@ -125,12 +125,6 @@ export const TrainInfo = (props: any) => {
       />
       <MapView
         ref={mapView}
-        initialRegion={{
-          latitude: 45.943161,
-          longitude: 24.96676,
-          latitudeDelta: 2,
-          longitudeDelta: 0.0421,
-        }}
         style={styles.mapView}
         onMapReady={() => {
           mapView?.current?.fitToCoordinates?.(stationCoordinates as LatLng[], {
