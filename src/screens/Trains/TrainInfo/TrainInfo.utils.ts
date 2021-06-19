@@ -16,6 +16,13 @@ export const getTrainCurrentCoordinates = (
   const leaveTrainTime = convertToHoursAndMinutes(stop.oraP);
   const arriveTrainTime = convertToHoursAndMinutes(stop.oraS);
 
+  if (nowTrainTime <= leaveTrainTime && !lastStation) {
+    return {
+      latitude: Number(nextStation.coordinates.lat),
+      longitude: Number(nextStation.coordinates.lon),
+    };
+  }
+
   if (nowTrainTime > leaveTrainTime && nowTrainTime < arriveTrainTime) {
     let totalTime = Number(stop.oraS) - Number(stop.oraP);
 
@@ -42,12 +49,6 @@ export const getTrainCurrentCoordinates = (
     let percentage = (timePassed * 100) / totalTime;
 
     return getCoordinatesForTrain(percentage, lastStation, nextStation);
-  }
-  if (nowTrainTime <= leaveTrainTime && !lastStation) {
-    return {
-      latitude: Number(nextStation.coordinates.lat),
-      longitude: Number(nextStation.coordinates.lon),
-    };
   }
 };
 

@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
   trainMarker: {
     height: 50,
     bottom: Platform.OS === 'android' ? 0 : 30,
+    right: 8,
     color: 'black',
   },
   stationIcon: {
