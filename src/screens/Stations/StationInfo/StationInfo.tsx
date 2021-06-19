@@ -86,6 +86,7 @@ export const StationInfo = (props: any) => {
       <MapView
         style={styles.mapView}
         ref={mapView}
+        zoomEnabled={false}
         onMapReady={() => {
           mapView?.current?.fitToCoordinates?.(
             [stationCoordinates] as LatLng[],
@@ -105,7 +106,7 @@ export const StationInfo = (props: any) => {
           longitudeDelta: 0.0421,
         }}
         initialCamera={{
-          altitude: 10,
+          altitude: 1000,
           heading: 1,
           pitch: 1,
           zoom: 1,

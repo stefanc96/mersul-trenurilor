@@ -88,16 +88,13 @@ export const TrainInfo = (props: any) => {
       );
       if (nextStation) {
         const lastStation = stations.find(
-          station =>
-            station.cod === train.route.stops[index - 1]?.codStaOrigine,
+          station => station.cod === train.route.stops[index - 1]?.codStaDest,
         );
 
         const newTrainCoordinates = getTrainCurrentCoordinates(
           stop,
           lastStation as Station,
           nextStation as Station,
-          originTime,
-          destinationTimeWithDelay,
         );
         if (newTrainCoordinates) {
           trainCoordinates = newTrainCoordinates;
@@ -125,6 +122,7 @@ export const TrainInfo = (props: any) => {
       />
       <MapView
         ref={mapView}
+        zoomEnabled={false}
         style={styles.mapView}
         onMapReady={() => {
           mapView?.current?.fitToCoordinates?.(stationCoordinates as LatLng[], {

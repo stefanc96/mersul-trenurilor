@@ -11,8 +11,6 @@ export const getTrainCurrentCoordinates = (
   stop: Stop,
   lastStation: Station,
   nextStation: Station,
-  originTime: string,
-  destinationTime: string,
 ): LatLng | undefined => {
   const nowTrainTime = getNowTrainTime();
   const leaveTrainTime = convertToHoursAndMinutes(stop.oraP);
@@ -45,11 +43,7 @@ export const getTrainCurrentCoordinates = (
 
     return getCoordinatesForTrain(percentage, lastStation, nextStation);
   }
-  if (
-    nowTrainTime <= destinationTime &&
-    nowTrainTime >= leaveTrainTime &&
-    !lastStation
-  ) {
+  if (nowTrainTime <= leaveTrainTime && !lastStation) {
     return {
       latitude: Number(nextStation.coordinates.lat),
       longitude: Number(nextStation.coordinates.lon),
