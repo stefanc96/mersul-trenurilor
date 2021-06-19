@@ -76,6 +76,30 @@ export const StationInfo = (props: any) => {
     longitude: Number(station.coordinates.lon),
   };
 
+  const mapProps =
+    Platform.OS === 'android'
+      ? {
+          onMapReady: () => {
+            mapView?.current?.fitToCoordinates?.(
+              [stationCoordinates] as LatLng[],
+              {
+                edgePadding: {
+                  right: width / 20,
+                  bottom: height / 20,
+                  left: width / 20,
+                  top: height / 20,
+                },
+              },
+            );
+          },
+          region: {
+            ...stationCoordinates,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.0421,
+          },
+        }
+      : null;
+
   return (
     <Layout style={appStyles.container}>
       <TopNavigation
@@ -87,24 +111,7 @@ export const StationInfo = (props: any) => {
         style={styles.mapView}
         ref={mapView}
         zoomEnabled={false}
-        onMapReady={() => {
-          mapView?.current?.fitToCoordinates?.(
-            [stationCoordinates] as LatLng[],
-            {
-              edgePadding: {
-                right: width / 20,
-                bottom: height / 20,
-                left: width / 20,
-                top: height / 20,
-              },
-            },
-          );
-        }}
-        region={{
-          ...stationCoordinates,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.0421,
-        }}
+        {...mapProps}
         initialCamera={{
           altitude: 1000,
           heading: 1,

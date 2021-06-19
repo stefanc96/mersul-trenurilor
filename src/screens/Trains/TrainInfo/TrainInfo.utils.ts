@@ -8,15 +8,24 @@ import {
 const dayInSeconds = 24 * 3600;
 
 export const getTrainCurrentCoordinates = (
-  stop: Stop,
+  currentStop: Stop,
+  nextStop: Stop,
   lastStation: Station,
   nextStation: Station,
 ): LatLng | undefined => {
   const nowTrainTime = getNowTrainTime();
-  const leaveTrainTime = convertToHoursAndMinutes(stop.oraP);
-  const arriveTrainTime = convertToHoursAndMinutes(stop.oraS);
+  const leaveTrainTime = convertToHoursAndMinutes(currentStop.oraP);
+  const arriveTrainTime = convertToHoursAndMinutes(currentStop.oraS);
+  const nextStopLeaveTrainTime = nextStop
+    ? convertToHoursAndMinutes(nextStop.oraP)
+    : '';
 
-  if (nowTrainTime <= leaveTrainTime && !lastStation) {
+  if (
+    (nowTrainTime <= arriveTrainTime && !lastStation) ||
+    (nowTrainTime >= arriveTrainTime &&
+      nowTrainTime <= nextStopLeaveTrainTime &&
+      nextStop)
+  ) {
     return {
       latitude: Number(nextStation.coordinates.lat),
       longitude: Number(nextStation.coordinates.lon),
@@ -24,9 +33,10 @@ export const getTrainCurrentCoordinates = (
   }
 
   if (nowTrainTime > leaveTrainTime && nowTrainTime < arriveTrainTime) {
-    let totalTime = Number(stop.oraS) - Number(stop.oraP);
+    let totalTime = Number(currentStop.oraS) - Number(currentStop.oraP);
 
-    let timePassed = Number(getNowTrainTimeInSeconds()) - Number(stop.oraP);
+    let timePassed =
+      Number(getNowTrainTimeInSeconds()) - Number(currentStop.oraP);
 
     let percentage = (timePassed * 100) / totalTime;
 
@@ -34,16 +44,17 @@ export const getTrainCurrentCoordinates = (
   }
 
   if (nowTrainTime < leaveTrainTime && nowTrainTime > arriveTrainTime) {
-    let totalTime = dayInSeconds - (Number(stop.oraS) - Number(stop.oraP));
+    let totalTime =
+      dayInSeconds - (Number(currentStop.oraS) - Number(currentStop.oraP));
     const nowTimeInSeconds = getNowTrainTimeInSeconds();
     let timePassed;
     if (nowTimeInSeconds < dayInSeconds) {
-      timePassed = nowTimeInSeconds - Number(stop.oraP);
+      timePassed = nowTimeInSeconds - Number(currentStop.oraP);
     } else {
       timePassed =
         dayInSeconds -
-        Number(stop.oraP) +
-        (Number(stop.oraS) - nowTimeInSeconds);
+        Number(currentStop.oraP) +
+        (Number(currentStop.oraS) - nowTimeInSeconds);
     }
 
     let percentage = (timePassed * 100) / totalTime;

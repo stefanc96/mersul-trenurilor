@@ -79,24 +79,26 @@ export const TrainInfo = (props: any) => {
   const renderBackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={onPressBack} />
   );
-  let trainCoordinates;
+  let trainCoordinates: LatLng | null = null;
 
   const stationCoordinates = chain(train.route.stops)
-    .map((stop, index) => {
+    .map((currentStop, index) => {
       const nextStation = stations.find(
-        station => station.cod === stop.codStaOrigine,
+        station => station.cod === currentStop.codStaOrigine,
       );
       if (nextStation) {
         const lastStation = stations.find(
-          station => station.cod === train.route.stops[index - 1]?.codStaDest,
+          station =>
+            station.cod === train.route.stops[index - 1]?.codStaOrigine,
         );
 
         const newTrainCoordinates = getTrainCurrentCoordinates(
-          stop,
+          currentStop,
+          train.route.stops?.[index + 1],
           lastStation as Station,
           nextStation as Station,
         );
-        if (newTrainCoordinates) {
+        if (newTrainCoordinates && !trainCoordinates) {
           trainCoordinates = newTrainCoordinates;
         }
         return {
@@ -109,7 +111,7 @@ export const TrainInfo = (props: any) => {
     .value();
 
   if (!trainCoordinates) {
-    trainCoordinates = last(stationCoordinates);
+    trainCoordinates = last(stationCoordinates) as LatLng;
   }
 
   return (
