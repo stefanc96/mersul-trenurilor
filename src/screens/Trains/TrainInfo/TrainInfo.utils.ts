@@ -14,17 +14,18 @@ export const getTrainCurrentCoordinates = (
   nextStation: Station,
 ): LatLng | undefined => {
   const nowTrainTime = getNowTrainTime();
-  const leaveTrainTime = convertToHoursAndMinutes(currentStop.oraP);
-  const arriveTrainTime = convertToHoursAndMinutes(currentStop.oraS);
-  const nextStopLeaveTrainTime = nextStop
+  const currentStopLeaveTime = convertToHoursAndMinutes(currentStop.oraP);
+  const currentStopArriveTime = convertToHoursAndMinutes(currentStop.oraS);
+
+  const nextStopLeaveTime = nextStop
     ? convertToHoursAndMinutes(nextStop.oraP)
     : '';
-
   if (
-    (nowTrainTime <= arriveTrainTime && !lastStation) ||
-    (nowTrainTime >= arriveTrainTime &&
-      nowTrainTime <= nextStopLeaveTrainTime &&
-      nextStop)
+    (nowTrainTime <= currentStopArriveTime && !lastStation) ||
+    (nowTrainTime >= currentStopArriveTime &&
+      nowTrainTime <= nextStopLeaveTime &&
+      nextStop) ||
+    currentStopArriveTime > nextStopLeaveTime
   ) {
     return {
       latitude: Number(nextStation.coordinates.lat),
@@ -32,7 +33,10 @@ export const getTrainCurrentCoordinates = (
     };
   }
 
-  if (nowTrainTime > leaveTrainTime && nowTrainTime < arriveTrainTime) {
+  if (
+    nowTrainTime > currentStopLeaveTime &&
+    nowTrainTime < currentStopArriveTime
+  ) {
     let totalTime = Number(currentStop.oraS) - Number(currentStop.oraP);
 
     let timePassed =
@@ -43,7 +47,10 @@ export const getTrainCurrentCoordinates = (
     return getCoordinatesForTrain(percentage, lastStation, nextStation);
   }
 
-  if (nowTrainTime < leaveTrainTime && nowTrainTime > arriveTrainTime) {
+  if (
+    nowTrainTime < currentStopLeaveTime &&
+    nowTrainTime > currentStopArriveTime
+  ) {
     let totalTime =
       dayInSeconds - (Number(currentStop.oraS) - Number(currentStop.oraP));
     const nowTimeInSeconds = getNowTrainTimeInSeconds();
